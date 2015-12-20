@@ -1,0 +1,31 @@
+<div ng-class="contactCtrl.pageClass">
+    <main-nav></main-nav>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <label for="email">E-mail</label>
+            <input type="email" id="email"/>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <label for="email">Subject</label>
+            <input type="text" id="subject"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label for="message">Message</label>
+            <textarea id="message"></textarea>
+        </div>
+    </div>
+    <div class="row actions">
+        <div class="col-sm-6">
+            <button class="btn">Cancel</button>
+        </div>
+        <div class="col-sm-6">
+            <button class="btn btn-primary" ng-click="">Send message</button>
+        </div>
+    </div>
+
+    <social-icons></social-icons>
+</div>
+
