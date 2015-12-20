@@ -1,0 +1,38 @@
+.page-home {
+  text-align: center;
+
+  nav {
+    margin: 1.5em 0 .8em 0;
+  }
+
+  h1 {
+    font-size: 1.4em;
+    font-weight: normal;
+    margin: 0 0 .5em 0;
+  }
+
+  p {
+    font-size: 1.1em;
+    font-weight: 100;
+    margin: .3em 0;
+  }
+
+}
+
+@media screen and (max-width: $mobile){
+
+  .page-home {
+
+    h1 {
+      font-size: 1.2em;
+    }
+
+    p {
+
+      font-size: 1em;
+
+    }
+
+  }
+
+}

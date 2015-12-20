@@ -6,9 +6,12 @@
             'ngRoute',
             'ngResource',
             'ngAnimate',
+            'ngSanitize',
+            'ui.bootstrap',
+            'app.components',
+            'app.services',
             'app.about',
             'app.articles',
-            'app.components',
             'app.contact',
             'app.home'
         ]

@@ -1,0 +1,21 @@
+<div ng-class="articleSingleCtrl.pageClass">
+
+    <main-nav></main-nav>
+
+    <div ng-show="articleSingleCtrl.isBusy">
+        <loading></loading>
+    </div>
+
+    <article>
+        <header>
+            <h1>{{ articleSingleCtrl.article.title }}</h1>
+            <span class="article-meta">
+                <time datetime="2014-01-29T00:00:00+00:00" itemprop="datePublished">Posted on Jan 29, 2014</time>
+            </span>
+        </header>
+        <section ng-bind-html="articleSingleCtrl.article.content">
+
+        </section>
+    </article>
+
+</div>

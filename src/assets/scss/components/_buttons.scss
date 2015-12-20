@@ -1,0 +1,44 @@
+.btn {
+  width: 100%;
+  display: inline-block;
+  padding: .65em .5em;
+  font-size: .9em;
+  color: $black;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 100;
+  outline: none;
+  border: 1px solid $dark-grey;
+
+  &:hover {
+    cursor: pointer;
+    color: rgba($black, .8);
+    border-color: rgba($dark-grey, .7);
+    @include transition(.2s all ease-in);
+  }
+
+  &:disabled {
+    opacity: .9;
+
+    &:hover {
+      cursor: not-allowed;
+      background: transparent;
+    }
+  }
+
+  &.btn-primary {
+    background: transparent;
+    border: 1px solid rgba($blue, .7);
+    color: rgba($blue, .7);
+
+    &:hover:not([disabled]) {
+      border-color: rgba($blue, .5);
+      color: rgba($blue, .6);
+      @include transition(.2s all ease-in);
+    }
+
+  }
+
+}
+

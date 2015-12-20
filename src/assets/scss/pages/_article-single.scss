@@ -1,0 +1,47 @@
+.article-single {
+  background-color: $light-black;
+
+  .page-article-single {
+    padding: 3em;
+  }
+
+  .main-container {
+    display: block;
+  }
+
+  canvas {
+    display: none !important;
+  }
+
+}
+
+.page-article-single {
+  width: 90%;
+  background: $pure-white;
+  margin-top: 3em;
+  margin-bottom: 3em;
+
+  h1 {
+    text-align: center;
+    margin-bottom: .3em;
+  }
+
+  .article-meta {
+    display: block;
+    text-align: center;
+    font-style: italic;
+    font-weight: 100;
+  }
+
+  article header {
+    margin-bottom: 1.4em;
+  }
+
+  article section {
+    font-family: $secondary-font;
+    font-size: 1em;
+    line-height: 1.5em;
+    color: $black;
+  }
+
+}

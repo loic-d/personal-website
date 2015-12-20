@@ -1,0 +1,60 @@
+.page-articles .article {
+  display: block;
+  background-color: $pure-white;
+  text-decoration: none;
+  color: $light-black;
+  margin-top: 1.5em;
+  font-size: 1.15em;
+  border-left: 3px solid $dark-grey;
+  padding: .6em;
+  transition: .25s all linear;
+
+  &:hover {
+    transform: translate(.2em, 0);
+    border-color: rgba($blue, .9);
+    color: rgba($blue, .9);
+    @include transition(.25s all linear);
+
+    .article-tag {
+      color: rgba($blue, .75);
+      @include transition(.25s color linear);
+    }
+
+  }
+
+  &:hover:after {
+    color: rgba($blue, .75);
+    @include transition(.25s color linear);
+  }
+
+  &:after {
+    content: attr(data-published-date);
+    display: block;
+    text-align: left;
+    font-size: .8em;
+    font-weight: 100;
+    color: #222;
+    margin-top: .3em;
+  }
+
+  .article-tag-container {
+    margin: .2em 0 .35em 0;
+  }
+
+  .article-tag {
+    display: inline;
+    font-size: .7em;
+    margin-right: .4em;
+    transition: .25s color linear;
+  }
+
+}
+
+.pagination {
+  text-align: center;
+  padding-left: 0;
+
+  > li {
+    display: inline;
+  }
+}

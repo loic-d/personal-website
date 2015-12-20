@@ -2,42 +2,55 @@
 <html ng-app="app">
 <head>
   <meta charset="utf-8">
-  <title>Loïc De Laubier - Front-end / UI Web developper</title>
+  <meta name="description" content="I am a Web developer focusing on front-end technologies and JavaScript applications. I work with a bunch of talented people for SAP Hybris for in Montreal.">
+
+  <title>Loïc De Laubier - Front-end / JavaScript Web developer</title>
+
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
 
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,100">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Serif">
 
-  <!-- build:css /assets/css/site.min.css -->
-  <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/themify-icons.css">
-  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+  <!-- build:js /assets/js/libs.js -->
+  <script src="assets/js/segment.min.js"></script>
+  <script src="../node_modules/angular/angular.min.js"></script>
+  <script src="../node_modules/angular-resource/angular-resource.min.js"></script>
+  <script src="../node_modules/angular-route/angular-route.min.js"></script>
+  <script src="../node_modules/angular-animate/angular-animate.js"></script>
+  <script src="../node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="assets/js/ui-bootstrap-custom-1.0.0.min.js"></script>
+  <script src="assets/js/ui-bootstrap-custom-tpls-1.0.0.min.js"></script>
   <!-- endbuild -->
 
-  <script src="../node_modules/angular/angular.min.js"></script>
-  <script src="../node_modules/angular/angular-resource.min.js"></script>
-  <script src="../node_modules/angular/angular-route.min.js"></script>
-  <script src="../node_modules/angular/angular-animate.js"></script>
-  <script src="../node_modules/angular/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://platform.twitter.com/widgets.js"></script>
 </head>
 
-<body>
+<body ng-class="bodyClass">
 
-<div class="container">
-
-  <canvas></canvas>
-
-  <div ng-view class="page-container"></div>
-
+<div class="main-container">
+  <div class="container">
+    <div ng-view class="view-container"></div>
+    <canvas></canvas>
+  </div>
 </div>
 
-
-<!-- build:js /app.js -->
+<!-- build:js1 /assets/js/app.js -->
 <script src="assets/js/canvas.js"></script>
+
+<script src="app/services/bootstrap.js"></script>
+<script src="app/services/article.service.js"></script>
+<script src="app/services/contact.service.js"></script>
+
 <script src="app/home/bootstrap.js"></script>
 <script src="app/home/home.controller.js"></script>
 
 <script src="app/articles/bootstrap.js"></script>
 <script src="app/articles/articles.controller.js"></script>
+<script src="app/articles/articles.filters.js"></script>
+<script src="app/articles/article-single.controller.js"></script>
 
 <script src="app/about/bootstrap.js"></script>
 <script src="app/about/about.controller.js"></script>
@@ -48,7 +61,11 @@
 <script src="app/components/bootstrap.js"></script>
 <script src="app/components/navigation.controller.js"></script>
 <script src="app/components/navigation.directive.js"></script>
+<script src="app/components/loading.service.js"></script>
+<script src="app/components/loading.directive.js"></script>
 <script src="app/components/social-icons.directive.js"></script>
+<script src="app/components/follow_twitter.controller.js"></script>
+<script src="app/components/follow_twitter.directive.js"></script>
 
 <script src="app/app.module.js"></script>
 <script src="app/app.config.js"></script>

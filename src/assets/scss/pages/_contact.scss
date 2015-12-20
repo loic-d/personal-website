@@ -1,0 +1,101 @@
+.page-contact {
+
+  .row [class^='col-']{
+    padding-bottom: 1.4em;
+  }
+
+  .row:not(:first-child){
+    margin-top: .6em;
+  }
+
+  label {
+    display: inline-block;
+    margin-bottom: .4em;
+    font-size: .85em;
+    text-transform: uppercase;
+  }
+
+  input {
+    width: 100%;
+    height: 2.6em;
+    padding: .5em .5em .7em 0;
+    margin-top: .6em;
+    font-size: 1em;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid $medium-grey;
+    font-weight: 100;
+    font-family: $main-font;
+    color: $light-black;
+    background: none;
+    @include transition(.5s all);
+
+    &:focus {
+      border-bottom-color: rgba($blue, .7);
+      @include transition(.4s all);
+    }
+
+  }
+
+  textarea {
+    resize: none;
+    display: block;
+    width: 100%;
+    height: 6em;
+    padding: .5em .5em .7em 0;
+    margin-top: .6em;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid $medium-grey;
+    font-weight: 100;
+    font-family: $main-font;
+    color: $light-black;
+    background: none;
+    @include transition(.5s all);
+
+    &:focus {
+      border-bottom-color: rgba($blue, .7);
+      @include transition(.4s all);
+    }
+
+  }
+
+  .actions {
+    margin-top: 1.1em !important;
+  }
+
+  .social-icons {
+    margin-top: 1.8em;
+    text-align: center;
+  }
+
+}
+
+.form-error {
+  position: absolute;
+  color: $error;
+  font-size: .75em;
+  display: block;
+  opacity: 1;
+  line-height: 1.2em;
+}
+
+.form-error.ng-hide {
+  opacity: 0;
+}
+
+.form-error.ng-hide-add.ng-hide-add-active,
+.form-error.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transition: opacity ease-in 0.3s;
+  transition: opacity ease-in 0.3s;
+}
+
+.message-confirmation {
+  text-align: center;
+  margin: 5em 0;
+  background-color: rgba($pure-white,.7);
+  padding: 1.5em 0;
+  font-weight: 100;
+  border: 1px solid $black;
+}

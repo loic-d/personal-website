@@ -1,27 +1,20 @@
 ;(function(){
 
-  var canvas = document.querySelector('canvas'),
-      context = canvas.getContext('2d');
+  // Adapted from http://codepen.io/dleatherman/pen/kAzgw to support colors and multiple viewports
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvas.style.display = 'block';
-
-  context.lineWidth = .3;
-
-  var mousePosition = {
-    x: 30 * canvas.width / 100,
-    y: 30 * canvas.height / 100
+  // CONSTANTS
+  var DOTS = {
+    NB: {
+      MOBILE: 45,
+      TABLET: 115,
+      DESKTOP: 180
+    },
+    DISTANCE: 100,
+    D_RADIUS: 140,
+    COLLECTION: []
   };
 
-  var dots = {
-    nb: 180,
-    distance: 100,
-    d_radius: 140,
-    array: []
-  };
-
-  var colors = [
+  var COLORS = [
     '#2176AE',
     '#57B8FF',
     '#B66D0D',
@@ -29,11 +22,42 @@
     '#FE6847'
   ];
 
-  var colorNb = colors.length,
-      dotColorIndex = 0,
-      lineColorIndex = 0;
+  var BREAKPOINTS = {
+    MOBILE: 667,
+    TABLET: 1024,
+    DESKTOP: 1200
+  };
 
-  function Dot() {
+
+  // Variables
+  var canvas,
+      context,
+      dotColorIndex = 0,
+      lineColorIndex = 0,
+      mousePosition = {
+        x: 30 * window.innerWidth / 100,
+        y: 30 * window.innerHeight / 100
+      },
+      nbOfDotsForViewport = getNbOfDotsForViewport();
+
+
+  // Init Canvas
+  function initCanvas() {
+    canvas = document.querySelector('canvas');
+    context = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = 'block';
+    context.lineWidth = .3;
+  };
+
+  function getNbOfDotsForViewport() {
+    return window.innerWidth >= BREAKPOINTS.DESKTOP ? DOTS.NB.DESKTOP : (window.innerWidth <= BREAKPOINTS.MOBILE ? DOTS.NB.MOBILE : DOTS.NB.TABLET);
+  }
+
+
+  // Constructor
+  var Dot = function() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
 
@@ -41,21 +65,26 @@
     this.vy = -.3 + Math.random();
 
     this.radius = Math.random()*1.4;
-  }
 
-  Dot.prototype = {
-    create: function() {
-      dotColorIndex == colorNb ? dotColorIndex = 0 : dotColorIndex++;
-      context.fillStyle = colors[dotColorIndex];
+    this.nbOfDots = window.innerWidth >= BREAKPOINTS.DESKTOP ? DOTS.NB.DESKTOP : (window.innerWidth <= BREAKPOINTS.MOBILE ? DOTS.NB.MOBILE : DOTS.NB.TABLET);
+  };
+
+  Dot.prototype.getNbOfDots = function(){
+      return this.nbOfDots;
+  };
+
+  Dot.prototype.create = function() {
+      dotColorIndex == COLORS.length ? dotColorIndex = 0 : dotColorIndex++;
+      context.fillStyle = COLORS[dotColorIndex];
       context.beginPath();
       context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
       context.closePath();
       context.fill();
-    },
+  };
 
-    move: function(){
-      for(var i = 0; i < dots.nb; i++){
-        var dot = dots.array[i];
+  Dot.prototype.move = function(){
+      for(var i = 0; i < this.getNbOfDots(); i++){
+        var dot = DOTS.COLLECTION[i];
         if(dot.y < 0 || dot.y > canvas.height){
           dot.vx = dot.vx;
           dot.vy = - dot.vy;
@@ -67,34 +96,34 @@
         dot.x += dot.vx;
         dot.y +=dot.vy;
       }
-    },
+  };
 
-    line: function() {
-      for(var i = 0; i < dots.nb; i++){
-        for(var j = 0; j < dots.nb; j++){
-          lineColorIndex == colorNb ? lineColorIndex = 0 : lineColorIndex++;
-          i_dot = dots.array[i];
-          j_dot = dots.array[j];
-          if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
-            if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
-              context.beginPath();
-              context.moveTo(i_dot.x, i_dot.y);
-              context.lineTo(j_dot.x, j_dot.y);
-              context.strokeStyle = colors[lineColorIndex];
-              context.stroke();
-              context.closePath();
-            }
+  Dot.prototype.line = function() {
+    for(var i = 0; i < this.getNbOfDots(); i++){
+      for(var j = 0; j < this.getNbOfDots(); j++){
+        lineColorIndex == COLORS.length ? lineColorIndex = 0 : lineColorIndex++;
+        i_dot = DOTS.COLLECTION[i];
+        j_dot = DOTS.COLLECTION[j];
+        if((i_dot.x - j_dot.x) < DOTS.DISTANCE && (i_dot.y - j_dot.y) < DOTS.DISTANCE && (i_dot.x - j_dot.x) > - DOTS.DISTANCE && (i_dot.y - j_dot.y) > - DOTS.DISTANCE){
+          if((i_dot.x - mousePosition.x) < DOTS.D_RADIUS && (i_dot.y - mousePosition.y) < DOTS.D_RADIUS && (i_dot.x - mousePosition.x) > - DOTS.D_RADIUS && (i_dot.y - mousePosition.y) > - DOTS.D_RADIUS){
+            context.beginPath();
+            context.moveTo(i_dot.x, i_dot.y);
+            context.lineTo(j_dot.x, j_dot.y);
+            context.strokeStyle = COLORS[lineColorIndex];
+            context.stroke();
+            context.closePath();
           }
         }
       }
     }
-  }
+  };
 
   function generateDots(){
+    initCanvas();
     context.clearRect(0, 0, canvas.width, canvas.height);
-    for(var i = 0; i < dots.nb; i++){
-      dots.array.push(new Dot());
-      dot = dots.array[i];
+    for(var i = 0; i < nbOfDotsForViewport; i++){
+      DOTS.COLLECTION.push(new Dot());
+      dot = DOTS.COLLECTION[i];
       dot.create();
     }
     dot.line();
@@ -112,6 +141,13 @@
     }
   });
 
-  setInterval(generateDots, 1000/20);
+  $(window).on('resize', function() {
+    clearInterval(dotInterval);
+    initCanvas();
+    nbOfDotsForViewport = getNbOfDotsForViewport();
+    dotInterval = setInterval(generateDots, 1000/20);
+  });
+
+  var dotInterval = setInterval(generateDots, 1000/20);
 
 })();

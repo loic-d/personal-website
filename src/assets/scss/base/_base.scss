@@ -1,0 +1,22 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: $white;
+  padding: 0;
+  margin: 0;
+  font-family: $main-font;
+  color: #222;
+}
+
+a {
+  text-decoration: none;
+  color: rgba($blue, .9);
+}
+
+.twitter-follow-container {
+  min-height: 20px;
+}

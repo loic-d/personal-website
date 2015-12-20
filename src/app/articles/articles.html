@@ -1,11 +1,19 @@
 <div ng-class="articlesCtrl.pageClass">
+
     <main-nav></main-nav>
 
-    <a href="" data-published-date="December 10th 2015" class="article-list-item">Extract Instagram pictures by hastags with node-instagram</a>
+    <div ng-show="articlesCtrl.isBusy">
+        <loading></loading>
+    </div>
 
-    <a href="" data-published-date="November 23th 2015" class="article-list-item">How I started with AngularJS</a>
+    <div ng-repeat="article in articlesCtrl.articles">
+        <a ng-href="#/articles/{{article.ID}}" data-published-date="December 10th 2015" class="article"> {{ article.title }}
+            <div class="article-tag-container">
+                <span class="article-tag" ng-repeat="tag in article.terms.post_tag">{{tag.name | tag}}</span>
+            </div>
+        </a>
+    </div>
 
-    <a href="" data-published-date="September 3th 2015" class="article-list-item">Improve your front-end workflow</a>
+    <uib-pagination boundary-links="true" total-items="articlesCtrl.numPages" ng-model="articlesCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
 
-    <a href="" data-published-date="September 3th 2015" class="article-list-item">Build a REST API with NodeJS and Express</a>
 </div>

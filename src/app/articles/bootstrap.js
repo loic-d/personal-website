@@ -1,6 +1,7 @@
 (function(){
     'use strict';
 
-    angular.module('app.articles', []);
+    angular
+        .module('app.articles', ['app.services']);
 
 })();
