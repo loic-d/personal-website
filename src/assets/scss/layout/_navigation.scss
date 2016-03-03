@@ -32,7 +32,7 @@ nav ul li {
     @include transition('width .35s ease, background-color .35s ease');
   }
 
-  &:last-child a {
+  &:last-child {
     margin-right: 0;
   }
 
@@ -40,6 +40,7 @@ nav ul li {
     text-decoration: none;
     text-transform: uppercase;
     color: rgba($black, .9);
+    font-size: .9em;
   }
 
 }

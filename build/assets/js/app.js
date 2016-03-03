@@ -7,10 +7,10 @@
     NB: {
       MOBILE: 45,
       TABLET: 115,
-      DESKTOP: 180
+      DESKTOP: 150
     },
     DISTANCE: 100,
-    D_RADIUS: 140,
+    D_RADIUS: 110,
     COLLECTION: []
   };
 

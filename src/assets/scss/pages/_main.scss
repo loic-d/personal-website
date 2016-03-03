@@ -1,14 +1,16 @@
 [class*="page-"] {
   background-color: rgba($white,.8);
   padding: 1.7em;
-  width: 45%;
+  max-width: 500px;
   margin: 0 auto;
 }
 
 @media screen and (max-width: $mobile){
 
   [class*="page-"] {
-    padding: 1.6em;
+    padding: .4em;
+    max-width: inherit;
+    width: 100%;
   }
 
 }
