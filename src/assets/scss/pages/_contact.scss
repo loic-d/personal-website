@@ -1,5 +1,7 @@
 .page-contact {
 
+  min-width: 450px;
+
   .row [class^='col-']{
     padding-bottom: 1.4em;
   }
@@ -98,4 +100,13 @@
   padding: 1.5em 0;
   font-weight: 100;
   border: 1px solid $black;
+}
+
+
+@media screen and (max-width: $mobile){
+
+  .page-contact {
+    min-width: inherit;
+  }
+
 }
