@@ -15,11 +15,11 @@ TODO:
 * Improve Gulp workflow
 
 Installation:
-*`git clone git@github.com:loic-d/personal-website.git`
-*`cd personal-website/`
-*`npm install`
-*`gulp build`
-*`gulp connect`
+* `git clone git@github.com:loic-d/personal-website.git`
+* `cd personal-website/`
+* `npm install`
+* `gulp build`
+* `gulp connect`
 
 
 
