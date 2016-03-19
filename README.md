@@ -7,11 +7,10 @@ Visible [here](http://www.loic-delaubier.com)
 _Not all the features are completed but feel free to use this code._
 
 TODO:
-* Finish Page service to retrieve page content from Wordpress
+* Use Page service to retrieve page content from Wordpress
 * Finish Article feature and publish articles
 * Custom build for webfonts to improve loading performance
 * Fix flexbox vertical centering issue with smaller screens
-* Replace native Twitter follow button
 * Improve Gulp workflow
 
 Installation:
