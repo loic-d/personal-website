@@ -24,13 +24,18 @@ canvas {
 .view-container {
   width: auto;
   max-width: 500px;
+  padding: 2em 1em;
+  overflow-y: scroll;
 }
 
 @media screen and (max-width: $mobile){
 
   .view-container {
-    padding: 1em;
     width: 100%;
+  }
+
+  canvas {
+    display: none !important;
   }
 
 }

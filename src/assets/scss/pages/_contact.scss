@@ -109,4 +109,8 @@
     min-width: inherit;
   }
 
+  .actions .row [class^='col-'] {
+    padding-bottom: .8em;
+  }
+
 }
