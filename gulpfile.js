@@ -77,4 +77,4 @@ gulp.task('connect-build', function () {
 
 gulp.task('build', ['sass', 'minify', 'copy']);
 
-gulp.task('default', ['connect']);
+gulp.task('default', ['build', 'connect']);
