@@ -5,6 +5,7 @@ var minifyHtml = require('gulp-minify-html');
 var sass = require('gulp-sass');
 var connect = require('gulp-connect');
 var rimraf = require('gulp-rimraf');
+var ngAnnotate = require('gulp-ng-annotate');
 
 var bases = {
     src: 'src/',
@@ -38,7 +39,8 @@ gulp.task('minify', ['sass', 'clean'], function(){
     return gulp.src('./src/index.html')
         .pipe(usemin({
             html: [minifyHtml({ empty: true })],
-            js: [uglify()]
+            js: [uglify()],
+            js1: [ngAnnotate(), uglify()]
         }))
         .pipe(gulp.dest('build'));
 });
