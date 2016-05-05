@@ -1,8 +1,8 @@
 # personal-website
 
-Personal website built with AngularJS. Wordpress can be used as a back-end to retrieve pages and articles with the WP REST API plugin.
+Personal website built with AngularJS. Wordpress can be used to retrieve pages and articles with the WP REST API plugin.
 
-Visible [here](http://www.loic-delaubier.com)
+Website visible [here](http://www.loic-delaubier.com)
 
 _Not all the features are completed but feel free to use this code._
 
@@ -14,11 +14,9 @@ Installation:
 * `git clone git@github.com:loic-d/personal-website.git`
 * `cd personal-website/`
 * `npm install`
-* `gulp build`
-* `gulp connect-dev`
+* `gulp`
 * Go to `http://localhost:8080/src/` (development version)
 
 Generate build for production:
-* `gulp build`
-* `gulp connect-build`
-* Go to `http://localhost:8000/` (production version)
+* Run `gulp build` to generate a standalone `/build` folder at the root of the project
+* To test the build, run `gulp connect-build` and go to `http://localhost:8000/`
