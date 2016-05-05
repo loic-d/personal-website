@@ -15,8 +15,8 @@ Installation:
 * `cd personal-website/`
 * `npm install`
 * `gulp`
-* Go to `http://localhost:8080/src/` (development version)
+* go to `http://localhost:8080/src/` (development version)
 
-Generate build for production:
-* Run `gulp build` to generate a standalone `/build` folder at the root of the project
-* To test the build, run `gulp connect-build` and go to `http://localhost:8000/`
+Production:
+* run `gulp build` to generate a standalone `/build` folder at the root of the project
+* to test the build, run `gulp connect-build` and go to `http://localhost:8000/`
