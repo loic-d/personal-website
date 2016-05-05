@@ -6,6 +6,7 @@ var sass = require('gulp-sass');
 var connect = require('gulp-connect');
 var rimraf = require('gulp-rimraf');
 var ngAnnotate = require('gulp-ng-annotate');
+var replace = require('gulp-replace-path');
 
 var bases = {
     src: 'src/',
@@ -32,7 +33,9 @@ gulp.task('sass', function () {
 });
 
 gulp.task('sass:watch', function () {
-    gulp.watch('src/**/scss/*.scss', ['sass']);
+    gulp.watch(['./src/**/scss/*.scss'], function(){
+      gulp.run('sass');
+    });
 });
 
 gulp.task('minify', ['sass', 'clean'], function(){
@@ -60,13 +63,14 @@ gulp.task('copy', ['clean'], function() {
         .pipe(gulp.dest(bases.dist + 'assets/php/'));
 
     gulp.src(paths.html_partials, {cwd: bases.src})
+        .pipe(replace(/\/src\/assets\/img\//g, '/assets/img/'))
         .pipe(minifyHtml({empty: true}))
         .pipe(gulp.dest(bases.dist + 'app/'));
 });
 
-gulp.task('connect', function () {
+gulp.task('connect-dev', function () {
     connect.server({
-        port: 8080,
+        port: 8080
     });
 });
 
@@ -79,4 +83,4 @@ gulp.task('connect-build', function () {
 
 gulp.task('build', ['sass', 'minify', 'copy']);
 
-gulp.task('default', ['build', 'connect']);
+gulp.task('default', ['build', 'connect-dev']);

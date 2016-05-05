@@ -5,8 +5,7 @@
   // CONSTANTS
   var DOTS = {
     NB: {
-      MOBILE: 45,
-      TABLET: 115,
+      TABLET: 90,
       DESKTOP: 150
     },
     DISTANCE: 100,
@@ -23,8 +22,6 @@
   ];
 
   var BREAKPOINTS = {
-    MOBILE: 667,
-    TABLET: 1024,
     DESKTOP: 1200
   };
 
@@ -52,7 +49,7 @@
   };
 
   function getNbOfDotsForViewport() {
-    return window.innerWidth >= BREAKPOINTS.DESKTOP ? DOTS.NB.DESKTOP : (window.innerWidth <= BREAKPOINTS.MOBILE ? DOTS.NB.MOBILE : DOTS.NB.TABLET);
+    return window.innerWidth >= BREAKPOINTS.DESKTOP ? DOTS.NB.DESKTOP : DOTS.NB.TABLET;
   }
 
 
@@ -66,7 +63,7 @@
 
     this.radius = Math.random()*1.4;
 
-    this.nbOfDots = window.innerWidth >= BREAKPOINTS.DESKTOP ? DOTS.NB.DESKTOP : (window.innerWidth <= BREAKPOINTS.MOBILE ? DOTS.NB.MOBILE : DOTS.NB.TABLET);
+    this.nbOfDots = window.innerWidth >= BREAKPOINTS.DESKTOP ? DOTS.NB.DESKTOP : DOTS.NB.TABLET;
   };
 
   Dot.prototype.getNbOfDots = function(){

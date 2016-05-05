@@ -35,9 +35,7 @@
     "gulp-serve": "^1.2.0",
     "gulp-uglify": "^1.5.1",
     "gulp-usemin": "^0.3.16",
-    "rimraf": "^2.4.4"
-  },
-  "dependencies": {
-    "gulp-sass": "^2.2.0"
+    "rimraf": "^2.4.4",
+    "gulp-replace-path": "^0.4.0"
   }
 }

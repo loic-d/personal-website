@@ -19,16 +19,16 @@
                 controllerAs: 'aboutCtrl',
                 templateUrl: 'app/about/about.html'
             })
-            .when('/articles', {
-                controller: 'ArticlesController',
-                controllerAs: 'articlesCtrl',
-                templateUrl: 'app/articles/articles.html'
-            })
-            .when('/articles/:id', {
-                controller: 'ArticleSingleController',
-                controllerAs: 'articleSingleCtrl',
-                templateUrl: 'app/articles/article-single.html'
-            })
+            // .when('/articles', {
+            //     controller: 'ArticlesController',
+            //     controllerAs: 'articlesCtrl',
+            //     templateUrl: 'app/articles/articles.html'
+            // })
+            // .when('/articles/:id', {
+            //     controller: 'ArticleSingleController',
+            //     controllerAs: 'articleSingleCtrl',
+            //     templateUrl: 'app/articles/article-single.html'
+            // })
             .otherwise({
                 redirectTo:'/'
             });
@@ -41,6 +41,9 @@
             switch(currentRoute.templateUrl) {
                 case 'app/articles/article-single.html':
                     $rootScope.bodyClass = 'article-single';
+                    break;
+                case 'app/about/about.html':
+                    $rootScope.bodyClass = 'body-about';
                     break;
                 default:
                     $rootScope.bodyClass = '';
@@ -56,4 +59,3 @@
         .run(run);
 
 })();
-
