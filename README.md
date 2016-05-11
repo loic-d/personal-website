@@ -1,4 +1,4 @@
-# personal-website
+# Personal website
 
 Personal website built with AngularJS. Wordpress can be used to retrieve pages and articles with the WP REST API plugin.
 
