@@ -4,17 +4,13 @@ Personal website built with AngularJS. Wordpress can be used to retrieve pages a
 
 Website visible [here](http://www.loic-delaubier.com)
 
-_Not all the features are completed but feel free to use this code._
-
-TODO:
-* Use Page service to retrieve page content from Wordpress
-* Finish Article feature... and start to write articles!
-
 Installation:
 * `git clone git@github.com:loic-d/personal-website.git`
 * `cd personal-website/`
 * `npm install`
-* `gulp`
+* setup a Wordpress installation with the `WP REST API` plugin. You need an `About` page and at least one blog post.
+* update `API_ROOT` in `/src/app.constants.js` to reflect your configuration
+* build the project by running `gulp`
 * go to `http://localhost:8080/src/` (development version)
 
 Production:

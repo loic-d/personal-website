@@ -1,33 +1,20 @@
 (function(){
     'use strict';
 
-    function ArticleSingleController(Article, $routeParams) {
+    function ArticleSingleController(Article, Loading, $routeParams, $timeout) {
 
-        var vm = this,
-            id = $routeParams.id;
+        var slug = $routeParams.slug;
 
-        vm.pageClass = 'page-article-single';
-        vm.article = {};
-        vm.isBusy = true;
+        Loading.triggerClear();
+        Loading.triggerInProgress();
 
-        activate();
+        this.pageClass = 'page-article-single';
+        this.isBusy = true;
 
-        function activate() {
-            return getArticle(id)
-                .then(function() {
-
-                });
-        }
-
-        function getArticle(id) {
-
-            return Article.getArticle(id)
-                .then(function(data){
-                    vm.article = data;
-                    vm.isBusy = false;
-                    return vm.article;
-                });
-        }
+        Article.getArticleBySlug(slug).then(function(article){
+            this.article = article;
+            this.isBusy = false;
+        }.bind(this));
 
     }
 

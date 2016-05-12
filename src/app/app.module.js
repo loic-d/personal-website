@@ -3,11 +3,14 @@
 
     angular
         .module('app', [
+            'hljs',
             'ngRoute',
             'ngResource',
             'ngAnimate',
             'ngSanitize',
             'ui.bootstrap',
+            'app.constants',
+            'app.helpers',
             'app.components',
             'app.services',
             'app.about',

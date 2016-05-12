@@ -1,34 +1,21 @@
 (function(){
     'use strict';
 
-    function ArticlesController(Article) {
+    function ArticlesController(Article, Loading) {
 
-        var vm = this;
-        vm.pageClass = 'page-articles';
-        vm.articles = [];
-        vm.isBusy = true;
-        vm.currentPage = 1;
-        vm.numPages = 5;
+        Loading.triggerClear();
+        Loading.triggerInProgress();
 
-        if(!Article.isBusy){
-            activate();
-        }
+        this.pageClass = 'page-articles';
+        this.isBusy = true;
 
-        function activate() {
-            return getArticles();
-        }
+        // this.currentPage = 1;
+        // this.numPages = 5;
 
-        function getArticles() {
-            return Article.getArticles()
-                .then(function(data) {
-
-                    vm.articles = data;
-                    if(vm.articles){
-                        vm.isBusy = false;
-                        return vm.articles;
-                    }
-                });
-        }
+        Article.getArticles().then(function(articles) {
+            this.articles = articles;
+            this.isBusy = false;
+        }.bind(this));
 
     }
 

@@ -6,16 +6,18 @@
         <loading></loading>
     </div>
 
-    <article>
+    <article ng-show="!articleSingleCtrl.isBusy">
         <header>
-            <h1>{{ articleSingleCtrl.article.title }}</h1>
+            <h1>{{ articleSingleCtrl.article.title.rendered }}</h1>
             <span class="article-meta">
-                <time datetime="2014-01-29T00:00:00+00:00" itemprop="datePublished">Posted on Jan 29, 2014</time>
+                <time datetime="{{ articleSingleCtrl.article.date }}" itemprop="datePublished">Posted on {{ articleSingleCtrl.article.date | date : 'mediumDate' }}</time>
             </span>
         </header>
-        <section ng-bind-html="articleSingleCtrl.article.content">
-
-        </section>
+        <section compile="articleSingleCtrl.article.content.rendered"></section>
+        <footer>
+          <a href="#/articles" title="Back" class="back-link">Back to articles</a>
+          <about-widget></about-widget>
+        </footer>
     </article>
 
 </div>

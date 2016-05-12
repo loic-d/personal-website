@@ -1,7 +1,7 @@
 (function(){
     'use strict';
 
-    function config($routeProvider){
+    function config($routeProvider, hljsServiceProvider){
 
         $routeProvider
             .when('/', {
@@ -19,19 +19,23 @@
                 controllerAs: 'aboutCtrl',
                 templateUrl: 'app/about/about.html'
             })
-            // .when('/articles', {
-            //     controller: 'ArticlesController',
-            //     controllerAs: 'articlesCtrl',
-            //     templateUrl: 'app/articles/articles.html'
-            // })
-            // .when('/articles/:id', {
-            //     controller: 'ArticleSingleController',
-            //     controllerAs: 'articleSingleCtrl',
-            //     templateUrl: 'app/articles/article-single.html'
-            // })
+            .when('/articles', {
+                controller: 'ArticlesController',
+                controllerAs: 'articlesCtrl',
+                templateUrl: 'app/articles/articles.html'
+            })
+            .when('/articles/:slug', {
+                controller: 'ArticleSingleController',
+                controllerAs: 'articleSingleCtrl',
+                templateUrl: 'app/articles/article-single.html'
+            })
             .otherwise({
                 redirectTo:'/'
             });
+
+            hljsServiceProvider.setOptions({
+          		tabReplace: '  '
+          	});
 
     }
 

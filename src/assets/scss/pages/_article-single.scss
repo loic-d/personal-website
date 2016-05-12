@@ -1,12 +1,17 @@
 .article-single {
   background-color: $light-black;
+  height: auto;
+  min-height: 100%;
 
-  .page-article-single {
-    padding: 3em;
+  .view-container {
+    width: 90%;
+    margin: 0 auto;
+    max-width: inherit;
   }
 
   .main-container {
     display: block;
+    position: inherit;
   }
 
   canvas {
@@ -18,12 +23,24 @@
 .page-article-single {
   width: 90%;
   background: $pure-white;
+  max-width: inherit;
   margin-top: 3em;
   margin-bottom: 3em;
+  padding: 3em;
 
   h1 {
-    text-align: center;
     margin-bottom: .3em;
+    font-size: 2.3em;
+    font-family: $main-font;
+    text-align: center;
+  }
+
+  h2 {
+    text-align: left;
+    color: $light-black;
+    font-family: $main-font;
+    margin-top: 1.4em;
+    font-size: 1.8em;
   }
 
   .article-meta {
@@ -31,6 +48,10 @@
     text-align: center;
     font-style: italic;
     font-weight: 100;
+    margin-bottom: 2.5em;
+    time {
+      font-size: .9em;
+    }
   }
 
   article header {
@@ -42,6 +63,52 @@
     font-size: 1em;
     line-height: 1.5em;
     color: $black;
+  }
+
+  .code-quote {
+    display: inline-block;
+    background-color: $grey;
+    padding: 0 .5em;
+    margin-bottom: .2em;
+    border-radius: .3em;
+    vertical-align: baseline;
+  }
+
+  .file-title {
+    font-family: $main-font;
+    font-weight: bolder;
+    font-size: 1.1em;
+    color: $light-black;
+    margin-bottom: 0;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin: 1.5em 0 1em 0;
+
+    &:before {
+      content:"\003c";
+      margin-right: .25em;
+    }
+  }
+
+}
+
+@media screen and (max-width: $mobile){
+
+  .article-single {
+
+    .view-container {
+      width: 95%;
+    }
+
+    .page-article-single {
+      width: 95%;
+      padding: 1.5em;
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+
   }
 
 }
