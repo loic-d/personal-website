@@ -2,6 +2,6 @@
     'use strict';
 
     angular
-        .module('app.about', []);
+        .module('app.about', ['app.services', 'app.components']);
 
 })();

@@ -2,17 +2,12 @@
 
     <main-nav></main-nav>
 
-    <img src="/src/assets/img/profile.jpg" alt="" />
-
-    <div class="twitter-follow-container">
-        <!-- <twitter-follow></twitter-follow> -->
-        <a href="https://twitter.com/loicMTL" target="_blank" class="btn btn-primary btn-twitter">Follow me</a>
+    <div ng-show="aboutCtrl.isBusy">
+        <loading></loading>
     </div>
 
-    <p>As a front-end developer, I focus on building web applications and user interfaces that offer a great usability and experience for end users.</p>
-    <p>I take a great interest in the JavaScript ecosystem, UI development and product conception.</p>
-    <p>I am currently working for SAP Hybris as a development consultant on distributed E-commerce systems and hold a Master's degree in E-commerce with a specialization in Computer Science from the University of Montreal.</p>
-    <p>Feel free to connect with me online or <a href="#/contact">contact me</a>.</p>
+    <div ng-show="!aboutCtrl.isBusy" ng-bind-html="aboutCtrl.renderedPage"></div>
+
     <social-icons></social-icons>
 
 </div>
