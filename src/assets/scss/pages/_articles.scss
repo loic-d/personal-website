@@ -5,11 +5,12 @@
   .article-link {
     display: block;
     text-decoration: none;
-    color: $light-black;
+    color: $black;
     margin-top: 1.5em;
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: normal;
-    padding: .6em;
+    padding: 1em 0;
+    border-bottom: 1px solid $medium-grey;
     transition: .25s all linear;
 
     &:hover {
@@ -56,16 +57,16 @@
 
   }
 
-  .article-list {
-    .article-link {
-      &:first-child {
-        margin-top: 6em;
-      }
-      &:last-child {
-        margin-bottom: 6em;
-      }
-    }
-  }
+  // .article-list {
+  //   .article-link {
+  //     &:first-child {
+  //       margin-top: 6em;
+  //     }
+  //     &:last-child {
+  //       margin-bottom: 6em;
+  //     }
+  //   }
+  // }
 
 }
 
