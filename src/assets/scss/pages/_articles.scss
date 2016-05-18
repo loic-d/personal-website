@@ -16,6 +16,7 @@
     &:hover {
       border-color: rgba($blue, .9);
       color: rgba($blue, .9);
+      border-bottom: 1px solid $medium-grey;
       @include transition(.25s all linear);
 
       .article-tag {
