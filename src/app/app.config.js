@@ -39,7 +39,7 @@
 
     }
 
-    function run($rootScope){
+    function run($rootScope, $animate){
 
         $rootScope.$on('$routeChangeSuccess', function (event, currentRoute) {
             switch(currentRoute.templateUrl) {
@@ -54,6 +54,8 @@
                     break;
             }
         });
+
+        $animate.enabled(true);
 
     }
 

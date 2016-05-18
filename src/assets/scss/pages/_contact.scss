@@ -10,6 +10,11 @@
     margin-top: .6em;
   }
 
+  form {
+    min-height: 315px;
+    width: 100%;
+  }
+
   label {
     display: inline-block;
     margin-bottom: .4em;
@@ -30,11 +35,11 @@
     font-family: $main-font;
     color: $light-black;
     background: none;
-    @include transition(.5s all);
+    @include transition(.5s border-bottom-color);
 
     &:focus {
       border-bottom-color: rgba($blue, .7);
-      @include transition(.4s all);
+      @include transition(.4s border-bottom-color);
     }
 
   }
@@ -54,11 +59,11 @@
     font-family: $main-font;
     color: $light-black;
     background: none;
-    @include transition(.5s all);
+    @include transition(.5s border-bottom-color);
 
     &:focus {
       border-bottom-color: rgba($blue, .7);
-      @include transition(.4s all);
+      @include transition(.4s border-bottom-color);
     }
 
   }

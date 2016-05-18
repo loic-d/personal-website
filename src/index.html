@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Developer focusing on front-end technologies and JavaScript applications. Currently working for SAP Hybris in Montreal on distributed E-Commerce systems.">
+  <meta name="description" content="Developer focusing on front-end technologies and JavaScript applications. Currently working on E-Commerce platforms for SAP Hybris in Montreal.">
 
   <title>Loïc de Laubier - Front-end/JavaScript developer</title>
 
@@ -15,10 +15,10 @@
 
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-  <!-- build:js /assets/js/libs.js -->
+  <!-- build:jsLibs /assets/js/libs.js -->
+  <script src="assets/js/highlight.min.js"></script>
   <script src="assets/js/segment.min.js"></script>
   <script src="../node_modules/angular/angular.min.js"></script>
   <script src="../node_modules/angular-resource/angular-resource.min.js"></script>
@@ -38,6 +38,7 @@
     ga('create', 'UA-77905101-1', 'auto');
     ga('send', 'pageview');
   </script>
+
 </head>
 
 <body ng-app="app" ng-class="bodyClass" ng-cloak>
@@ -47,8 +48,10 @@
     <canvas></canvas>
 </div>
 
-<!-- build:js1 /assets/js/app.js -->
+<!-- build:jsApp /assets/js/app.js -->
 <script src="assets/js/canvas.js"></script>
+
+<script src="app/app.templates.js"></script>
 
 <script src="app/helpers/bootstrap.js"></script>
 <script src="app/helpers/compile.helper.js"></script>

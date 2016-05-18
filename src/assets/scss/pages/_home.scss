@@ -2,7 +2,7 @@
   text-align: center;
 
   nav {
-    margin: 1.5em 0 .8em 0;
+    margin: 1.7em 0 1em 0;
   }
 
   h1 {
@@ -22,6 +22,12 @@
 @media screen and (max-width: $mobile){
 
   .page-home {
+
+    nav {
+      a {
+        font-size: .8em;
+      }
+    }
 
     h1 {
       font-size: 1.1em;

@@ -5,7 +5,7 @@
     <loading></loading>
 
     <form name="contactForm" ng-submit="contactCtrl.sendMessage()" ng-show="contactCtrl.displayForm" novalidate>
-        <div class="row">
+        <div class="row no-animate">
             <div class="col-sm-12">
                 <label for="email">E-mail</label>
                 <span class="form-error"
@@ -14,7 +14,7 @@
                        ng-model="contactCtrl.formData.email" />
             </div>
         </div>
-        <div class="row">
+        <div class="row no-animate">
             <div class="col-sm-12">
                 <label for="message">Message</label>
                 <span class="form-error"
@@ -39,4 +39,3 @@
     <social-icons></social-icons>
 
 </div>
-

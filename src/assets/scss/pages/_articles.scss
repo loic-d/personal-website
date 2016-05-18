@@ -8,6 +8,7 @@
     color: $light-black;
     margin-top: 1.5em;
     font-size: 1em;
+    font-weight: normal;
     padding: .6em;
     transition: .25s all linear;
 
@@ -32,7 +33,7 @@
       content: attr(data-published-date);
       text-align: center;
       display: block;
-      font-size: .65em;
+      font-size: .8em;
       font-weight: 100;
       color: #222;
       margin-top: .3em;
