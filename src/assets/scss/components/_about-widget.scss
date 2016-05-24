@@ -4,6 +4,7 @@
 }
 
 .about-widget-content {
+
     img {
       width: 75px;
       height: 75px;
@@ -20,15 +21,19 @@
     .social-icons {
       margin-top: 0;
       padding-left: 88px;
+
       li {
         padding: 0 .35em;
       }
+
     }
+
 }
 
 @media screen and (max-width: $tablet){
 
   .about-widget-content {
+
     img {
       float: none !important;
       margin: 0 auto;
@@ -45,6 +50,7 @@
       padding-left: inherit;
       text-align: center;
     }
+    
   }
 
 }

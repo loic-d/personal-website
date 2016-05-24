@@ -2,23 +2,30 @@
   margin: .9em 0 0 0;
   padding: 0;
   list-style-type: none;
-}
 
-.social-icons li {
-  display: inline;
-  padding: 0 .6em;
-  text-align: center;
-}
+  li {
+    display: inline;
+    padding: 0 .6em;
+    text-align: center;
 
-.social-icons li a {
-  text-decoration: none;
-  color: #565656;
-}
+    a {
+      text-decoration: none;
+      color: #565656;
 
-.social-icons li a:hover {
-  text-decoration: none;
-  color: rgba($blue, .9);
-  transition: .25s color;
+      &:hover {
+        text-decoration: none;
+        color: rgba($blue, .9);
+        transition: .25s color;
+      }
+
+    }
+
+    &:last-child a {
+        vertical-align: middle;
+    }
+
+  }
+
 }
 
 .social-icons li a span[class^="ti-"] {

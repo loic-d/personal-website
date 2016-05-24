@@ -1,24 +1,25 @@
 .page-about {
   background-color: rgba($white, .85);
   text-align: center;
-}
 
-.page-about img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  display: block;
-  margin: 0 auto 1.5em auto;
-}
+  img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 1.5em auto;
+  }
 
-.page-about p {
-  font-weight: 100;
-  font-size: 1em;
-  line-height: 1.4em;
-}
+  p {
+    font-weight: 100;
+    font-size: 1em;
+    line-height: 1.4em;
+  }
 
-.page-about .social-icons {
-  margin-top: 1.1em;
+  .social-icons {
+    margin-top: 1.1em;
+  }
+
 }
 
 .twitter-follow-container {
