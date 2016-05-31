@@ -15,10 +15,11 @@
                 }})
                 .then(function(){
                     deferred.resolve()
-                    return deferred.promise;
                 }, function() {
                     deferred.reject();
                 });
+
+            return deferred.promise;
 
         };
 
