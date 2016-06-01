@@ -15,4 +15,4 @@ Installation:
 
 Production:
 * run `gulp deploy` to generate a standalone `/build` folder at the root of the project
-* to test the build, run `gulp connect-deploy` and go to `http://localhost:8000/`
+* to test the build, run `gulp connect-prod` and go to `http://localhost:8000/`
