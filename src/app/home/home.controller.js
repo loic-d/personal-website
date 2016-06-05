@@ -3,9 +3,8 @@
 
     function HomeController() {
 
-        var vm = this;
-        vm.pageClass = 'page-home';
-        vm.isHomePage = 'true';
+        this.pageClass = 'page-home';
+        this.isHomePage = 'true';
 
     }
 

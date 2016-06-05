@@ -42,6 +42,27 @@ nav {
         font-weight: normal;
       }
 
+
+    }
+
+  }
+
+}
+
+.page-home {
+
+  nav ul li {
+
+    &:nth-child(2) {
+
+      a {
+        color: rgba($blue, .9);
+      }
+
+      &:hover:after {
+        background: rgba($blue, .9);
+      }
+      
     }
 
   }

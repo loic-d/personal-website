@@ -1,5 +1,5 @@
 .article-single {
-  background-color: $light-black;
+  background: linear-gradient(to top, $pure-white, $white-variation);
   height: auto;
   min-height: 100%;
 
@@ -65,9 +65,18 @@
     color: $black;
   }
 
+  [hljs] {
+    overflow-x: scroll;
+
+     pre {
+       min-width: 500px;
+     }
+  }
+
   .code-quote {
     display: inline-block;
     background-color: $grey;
+    word-break: break-all;
     padding: 0 .5em;
     margin-bottom: .2em;
     border-radius: .3em;
@@ -78,6 +87,7 @@
     font-family: $main-font;
     font-weight: bolder;
     font-size: 1.1em;
+    word-wrap: break-word;
     color: $light-black;
     margin-bottom: 0;
   }

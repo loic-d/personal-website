@@ -6,12 +6,13 @@
         <loading></loading>
     </div>
 
-    <div class="article-list">
+    <div class="article-list" ng-show="!articlesCtrl.isBusy">
       <a ng-show="!articlesCtrl.isBusy" ng-repeat="article in articlesCtrl.articles" ng-href="#/articles/{{article.slug}}" data-published-date="Posted on {{article.date | date : 'mediumDate' }}" class="article-link"> {{ article.title.rendered }}
           <div class="article-tag-container">
               <span class="article-tag" ng-repeat="tag in article.terms.post_tag">{{tag.name | tag}}</span>
           </div>
       </a>
+      <hr />
     </div>
 
     <!-- <uib-pagination boundary-links="true" total-items="articlesCtrl.numPages" ng-model="articlesCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination> -->

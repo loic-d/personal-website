@@ -8,14 +8,11 @@
     margin-top: 1.5em;
     font-size: 1.1em;
     font-weight: normal;
-    padding: 1em 0;
-    border-bottom: 1px solid $medium-grey;
-    transition: .25s all linear;
+    padding: 1em 0 .3em 0;
+    @include transition(.25s all linear);
 
     &:hover {
-      border-color: rgba($blue, .9);
       color: rgba($blue, .9);
-      border-bottom: 1px solid $medium-grey;
       @include transition(.25s all linear);
 
       .article-tag {
@@ -57,16 +54,18 @@
 
   }
 
-  // .article-list {
-  //   .article-link {
-  //     &:first-child {
-  //       margin-top: 6em;
-  //     }
-  //     &:last-child {
-  //       margin-bottom: 6em;
-  //     }
-  //   }
-  // }
+  .article-list {
+
+      hr {
+        border: none;
+        height: 1px;
+        background-color: $medium-grey;
+        width: 40%;
+        margin-bottom: 2.8em;
+        @include transition('0.25s all linear');
+      }
+
+  }
 
 }
 

@@ -3,17 +3,16 @@
 
     function ContactController(Contact, Loading, $timeout, $location) {
 
-        var vm = this;
-        vm.pageClass = 'page-contact';
-        vm.formData = {};
-        vm.displayForm = true;
+        this.pageClass = 'page-contact';
+        this.formData = {};
+        this.displayForm = true;
 
         // Reset the loading directive thought the Loading service
         Loading.triggerClear();
 
-        vm.sendMessage = function() {
+        this.sendMessage = function() {
 
-            vm.displayForm = false;
+            this.displayForm = false;
             Loading.triggerInProgress('sending...');
 
             Contact.sendMessage(vm.formData).then(function() {

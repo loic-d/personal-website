@@ -3,8 +3,7 @@
 
     function NavigationController($location) {
 
-        var vm = this;
-        vm.isCurrent = function(route){
+        this.isCurrent = function(route){
             if(route.indexOf('articles') > 0 && $location.path().indexOf('articles') > 0) return true;
             return route === $location.path();
         };

@@ -1,8 +1,16 @@
 <?php
     if($_POST){
-        $message = "E-mail: " . $_POST['email'] . "<br/>" . "Message:" . $_POST['message'];
+        $headers ='From: contact@loic-delaubier.com'."\n";
+        $headers .='Reply-To: contact@loic-delaubier.com'."\n";
+        $headers .='Content-Type: text/plain; charset="iso-8859-1"'."\n";
+        $headers .='Content-Transfer-Encoding: 8bit';
+        
+        reset($_POST);
+        $json = key($_POST);
+        $obj = json_decode($json);
+        $message = $obj->{'email'} . " " . $obj->{'message'};
 
-        if (mail('loic.delaubier@gmail.com', 'New message from personal website', $message, "From: loic.delaubier@gmail.com\r\n")){
+        if (mail('loic.delaubier@gmail.com', 'New message from personal website', $message, $headers)){
             echo 'message sent';
         }
         else {
