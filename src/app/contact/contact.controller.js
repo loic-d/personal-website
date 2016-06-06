@@ -15,13 +15,13 @@
             this.displayForm = false;
             Loading.triggerInProgress('sending...');
 
-            Contact.sendMessage(vm.formData).then(function() {
+            Contact.sendMessage(this.formData).then(function() {
 
                 $timeout(function() {
 
                     Loading.triggerSuccess('message sent. i will get back to you soon.');
 
-                }, 2000);
+                }, 1500);
 
             }, function() {
 
