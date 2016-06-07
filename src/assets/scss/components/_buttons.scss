@@ -10,6 +10,7 @@
   font-weight: 100;
   outline: none;
   border: 1px solid $dark-grey;
+  border-radius: .2em;
 
   &:hover {
     cursor: pointer;
@@ -25,13 +26,14 @@
       cursor: not-allowed;
       background: transparent;
     }
-    
+
   }
 
   &.btn-primary {
     background: transparent;
     border: 1px solid rgba($blue, .7);
     color: rgba($blue, .7);
+    font-weight: bolder;
 
     &:hover:not([disabled]) {
       border-color: rgba($blue, .5);

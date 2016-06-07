@@ -7,15 +7,15 @@
     </div>
 
     <div class="article-list" ng-show="!articlesCtrl.isBusy">
-      <a ng-show="!articlesCtrl.isBusy" ng-repeat="article in articlesCtrl.articles" ng-href="#/articles/{{article.slug}}" data-published-date="Posted on {{article.date | date : 'mediumDate' }}" class="article-link"> {{ article.title.rendered }}
-          <div class="article-tag-container">
-              <span class="article-tag" ng-repeat="tag in article.terms.post_tag">{{tag.name | tag}}</span>
+      <a ng-show="!articlesCtrl.isBusy" ng-repeat="article in articlesCtrl.articles" ng-href="#/articles/{{article.slug}}" class="article-link">
+          <img ng-src="{{article.better_featured_image.source_url}}" alt="{{article.better_featured_image.alt_text}}" />
+          <div class="article-title">
+            <h1>{{ article.title.rendered }}</h1>
+            <span>Posted on {{article.date | date : 'mediumDate' }}</span>
           </div>
       </a>
-      <hr />
     </div>
 
-    <!-- <uib-pagination boundary-links="true" total-items="articlesCtrl.numPages" ng-model="articlesCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination> -->
     <social-icons></social-icons>
 
 </div>
