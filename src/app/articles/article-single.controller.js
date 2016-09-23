@@ -1,7 +1,7 @@
 (function(){
     'use strict';
 
-    function ArticleSingleController(Article, Loading, $routeParams, $timeout) {
+    function ArticleSingleController(Article, Loading, $routeParams) {
 
         var slug = $routeParams.slug;
 

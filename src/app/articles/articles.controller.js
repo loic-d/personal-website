@@ -9,9 +9,6 @@
         this.pageClass = 'page-articles';
         this.isBusy = true;
 
-        // this.currentPage = 1;
-        // this.numPages = 5;
-
         Article.getArticles().then(function(articles) {
             this.articles = articles;
             this.isBusy = false;

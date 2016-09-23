@@ -66,8 +66,6 @@
   }
 
   [hljs] {
-    overflow-x: scroll;
-
      pre {
        min-width: 500px;
      }
@@ -125,6 +123,10 @@
       padding: 1.2em;
       margin-top: 1em;
       margin-bottom: 1em;
+
+      [hljs] {
+        overflow-x: scroll;
+      }
     }
 
   }
