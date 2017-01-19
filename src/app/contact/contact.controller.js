@@ -19,7 +19,7 @@
 
                 $timeout(function() {
 
-                    Loading.triggerSuccess('message sent. i will get back to you soon.');
+                    Loading.triggerSuccess('Message sent. I will get back to you soon.');
 
                 }, 1500);
 

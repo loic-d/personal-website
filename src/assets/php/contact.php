@@ -1,6 +1,6 @@
 <?php
 
-    header('Access-Control-Allow-Origin: http://loic-delaubier.com');
+    header('Access-Control-Allow-Origin: https://loic-delaubier.com');
 
     if($_POST){
         $headers ='From: contact@loic-delaubier.com'."\n";

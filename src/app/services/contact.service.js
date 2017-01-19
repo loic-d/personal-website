@@ -3,7 +3,7 @@
 
     function Contact($http, $q){
 
-        var POST_URL = 'http://www.loic-delaubier.com/assets/php/contact.php';
+        var POST_URL = 'https://www.loic-delaubier.com/assets/php/contact.php';
 
         var _sendMessage = function(data) {
 
