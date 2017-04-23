@@ -6,19 +6,15 @@
   }
 
   h1 {
-    font-size: 1.3em;
-    font-weight: normal;
+    font-size: 1.4em;
+    font-weight: 300;
     margin: 0 0 .5em 0;
   }
 
   p {
     font-size: 1.1em;
     font-weight: 100;
-    margin: .3em 0 .4em 0;
-  }
-
-  p + p {
-    font-size: 1em;
+    margin: .45em 0;
   }
 
 }
@@ -34,13 +30,18 @@
     }
 
     h1 {
-      font-size: 1.1em;
+      font-size: 1.2em;
+      margin-bottom: .75em;
     }
 
     p {
 
       font-size: .9em;
 
+    }
+
+    p + p {
+      font-size: .9em;
     }
 
   }

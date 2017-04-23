@@ -25,8 +25,8 @@ nav {
 
       &:hover:after, &.active:after {
         display: block;
-        width: 100%;
-        background: rgba($black, .9);
+        width: 95%;
+        background: rgba($black, .6);
         @include transition('width .35s ease, background-color .35s ease');
       }
 
@@ -40,6 +40,7 @@ nav {
         color: $black;
         font-size: 1em;
         font-weight: normal;
+        letter-spacing: .01em;
       }
 
 
@@ -62,7 +63,7 @@ nav {
       &:hover:after {
         background: rgba($blue, .9);
       }
-      
+
     }
 
   }

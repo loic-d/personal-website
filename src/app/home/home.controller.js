@@ -1,11 +1,13 @@
 (function(){
     'use strict';
 
-    function HomeController() {
+    function HomeController(Article) {
 
         this.pageClass = 'page-home';
         this.isHomePage = 'true';
 
+        // Preload articles
+        Article.getArticles();
     }
 
     angular

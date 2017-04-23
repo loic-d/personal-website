@@ -1,5 +1,5 @@
 .article-single {
-  background: linear-gradient(to top, $pure-white, $white-variation);
+  background: linear-gradient(to top, $white-variation-light, $white-variation);
   height: auto;
   min-height: 100%;
 
@@ -27,6 +27,12 @@
   margin-top: 3em;
   margin-bottom: 3em;
   padding: 3em;
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 300;
+  }
 
   h1 {
     margin-bottom: .3em;
@@ -59,15 +65,32 @@
   }
 
   article section {
-    font-family: $secondary-font;
     font-size: 1em;
     line-height: 1.5em;
     color: $black;
+
+    p {
+      &::selection {
+        background: rgba($blue, .1);
+      }
+      &::-moz-selection {
+        background: $blue;
+      }
+    }
   }
 
   [hljs] {
      pre {
        min-width: 500px;
+     }
+
+     // Quick fix for JSX rendering
+     .xml {
+       white-space: pre;
+
+       .hljs-tag .hljs-name {
+         text-transform: capitalize;
+       }
      }
   }
 
@@ -75,9 +98,9 @@
     display: inline-block;
     background-color: $grey;
     word-break: break-all;
-    padding: 0 .5em;
+    padding: 0 .3em;
     margin-bottom: .2em;
-    border-radius: .3em;
+    border-radius: .2em;
     vertical-align: baseline;
   }
 
@@ -95,6 +118,10 @@
     height: auto;
     border: 1px solid $medium-grey;
     margin-bottom: 1.5em;
+
+    &.no-border {
+      border: none;
+    }
   }
 
   .back-link {

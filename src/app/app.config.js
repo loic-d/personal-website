@@ -43,6 +43,9 @@
 
         $rootScope.$on('$routeChangeSuccess', function (event, currentRoute) {
             switch(currentRoute.templateUrl) {
+                case 'app/articles/articles.html':
+                  $rootScope.bodyClass = 'articles-list';
+                  break;
                 case 'app/articles/article-single.html':
                     $rootScope.bodyClass = 'article-single';
                     break;

@@ -6,6 +6,14 @@
   animation: #{$str};
 }
 
+@mixin transform($str) {
+  -webkit-transform: #{$str};
+  -moz-transform: #{$str};
+  -ms-transform: #{$str};
+  -o-transform: #{$str};
+  transform: #{$str};
+}
+
 @mixin transition($str) {
   -webkit-transition: #{$str};
   -moz-transition: #{$str};
@@ -13,6 +21,7 @@
   -o-transition: #{$str};
   transition: #{$str};
 }
+
 
 @mixin keyframes($animation-name) {
   @-webkit-keyframes #{$animation-name} {

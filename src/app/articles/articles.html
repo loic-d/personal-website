@@ -6,14 +6,16 @@
         <loading></loading>
     </div>
 
-    <div class="article-list" ng-show="!articlesCtrl.isBusy">
-      <a ng-show="!articlesCtrl.isBusy" ng-repeat="article in articlesCtrl.articles" ng-href="#/articles/{{article.slug}}" class="article-link">
-          <img ng-src="{{article.better_featured_image.source_url}}" alt="{{article.better_featured_image.alt_text}}" />
-          <div class="article-title">
-            <h1>{{ article.title.rendered }}</h1>
-            <span>Posted on {{article.date | date : 'mediumDate' }}</span>
-          </div>
-      </a>
+    <div class="article-list row" ng-show="!articlesCtrl.isBusy">
+      <div class="col-xs-12 col-md-6" ng-repeat="article in articlesCtrl.articles">
+        <a ng-show="!articlesCtrl.isBusy" ng-href="#/articles/{{article.slug}}" class="article-link">
+            <img ng-src="{{article.better_featured_image.source_url}}" alt="{{article.better_featured_image.alt_text}}" />
+            <div class="article-title">
+              <h1>{{ article.title.rendered }}</h1>
+              <span>Posted on {{article.date | date : 'mediumDate' }}</span>
+            </div>
+        </a>
+      </div>
     </div>
 
     <social-icons></social-icons>

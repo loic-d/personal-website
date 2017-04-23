@@ -1,0 +1,1049 @@
+Meteor is known to provide <a href="https://www.meteor.com/accounts" target="_blank">a simple way to authenticate users</a> in JavaScript applications. In this tutorial, we will learn how we can easily extend the default authentication packages and use Instagram as an identity provider to authenticate a new user. This new user will be added to the Meteor user collection and we will use the framework's native authentication functions to login and logout. Then, we will build an Instagram data service to retrieve the latest media of the current application user.
+
+We will use <a href="http://www.angular-meteor.com/" target="_blank">Angular-Meteor</a> and build our own front-end components and pages. If you want to learn more about Angular-Meteor, a great tutorial is available <a href="http://www.angular-meteor.com/tutorials/socially/" target="_blank">on the project's website</a>. Basically, this project brings Angular features to Meteor applications and allows you to build your front-end the 'Angular way' instead of using Meteor's default UI package called Blaze.
+
+<h2>What we will be building</h2>
+
+<div class="row">
+  <div class="col-xs-12 col-md-6">
+    <img src="http://loic-delaubier.com/api/wp-content/uploads/2016/05/home.jpg" alt="Home page" width="1000" height="513" class="content-img" />
+  </div>
+  <div class="col-xs-12 col-md-6">
+    <img src="http://loic-delaubier.com/api/wp-content/uploads/2016/05/instagram_login.jpg" alt="Instagram login" width="1000" height="512" class="content-img" />
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-md-6">
+    <img src="http://loic-delaubier.com/api/wp-content/uploads/2016/05/loading.jpg" alt="Loading" width="1000" height="511" class="content-img" />
+  </div>
+  <div class="col-xs-12 col-md-6">
+    <img src="http://loic-delaubier.com/api/wp-content/uploads/2016/05/userHome.jpg" alt="User home" width="1000" height="509" class="content-img" />
+  </div>
+</div>
+
+
+<h2>Project setup</h2>
+If you haven't installed Meteor yet, open your terminal and run:
+[raw]
+<div hljs>
+curl https://install.meteor.com/ | sh
+</div>
+[/raw]
+
+Then, create a new Meteor application and start it:
+[raw]
+<div hljs language="bash">
+# Create a new Meteor application
+meteor create meteor-ng-instagram-auth
+
+# Naviguate to the created directory
+cd meteor-ng-instagram-auth
+
+# Start the application
+meteor
+</div>
+[/raw]
+
+Your application is now running at:
+[raw]
+<div hljs language="bash">
+http://localhost:3000/
+</div>
+[/raw]
+
+Meteor generates default HTML, CSS and JavaScript files for any newly created application. As we want our own application structure, you can delete the following files:
+[raw]
+<div hljs language="bash">
+# Delete those files
+- client/main.css
+- client/main.html
+- client/main.js
+- server/main.js
+</div>
+[/raw]
+
+We will rely on different third-party packages and remove Meteor's default UI package (Blaze) as we are using AngularJS for the views. Run the following commands in your terminal to remove the useless packages and add the ones we need:
+[raw]
+<div hljs language="bash">
+# Remove useless packages
+meteor remove blaze-html-templates
+meteor remove ecmascript
+meteor npm uninstall bootstrap --save
+
+# Angular-Meteor packages
+meteor npm install --save angular angular-meteor
+meteor add angular-templates pbastowski:angular-babel
+
+# Packages we will use for the application
+meteor npm install --save angular-material
+meteor npm install --save angular-ui-router
+meteor add service-configuration http accounts-password accounts-base planettraining:material-design-icons less
+
+# Install the other needed npm packages
+meteor npm install
+</div>
+[/raw]
+
+What do we need those packages for?
+<ul>
+  <li><strong class="code-quote">angular-meteor</strong> is the core of the Angular-Meteor project.</li>
+  <li><strong class="code-quote">angular-ui-router</strong> for flexible client-side routing based on states.</li>
+  <li><strong class="code-quote">angular-templates</strong> allows you to use Angular templates instead of Blaze.</li>
+  <li><strong class="code-quote">pbastowski:angular-babel</strong> will compile our ES6 code to ES5.</li>
+ 	<li><strong class="code-quote">service-configuration</strong> will be used to store the application's configuration in the database. In our case, the configuration will be your Instagram <span class="code-quote">clientId</span> and <span class="code-quote">secret</span>. If you don't have that information yet, <a href="https://www.instagram.com/developer/" target="_blank">go to Instagram's developers' page</a> and create a new client.</li>
+ 	<li><strong class="code-quote">http</strong> will allow us to make server-side http requests to retrieve an access token for the user from Instagram servers.</li>
+ 	<li><strong class="code-quote">accounts-password</strong> and <strong class="code-quote">accounts-base</strong> are Meteor's authentication packages. We will rely on them as they reveal helpful methods.</li>
+ 	<li><strong class="code-quote">less</strong> will compile the LESS files to CSS files. If you prefer, you can also use plain CSS or SASS.</li>
+  <li><strong class="code-quote">angular-material</strong> to make our app pretty. We will use different features like the grid layout or the buttons.</li>
+</ul>
+
+<h2>Application structure</h2>
+Add the missing folders and files in order to have this project structure:
+[raw]
+<div hljs hljs-no-escape language="bash">
+├── .meteor (Meteor folder, content ignored)
+├── both
+│   └── modules
+│       └── _modules.js
+├── client
+│   ├── index.html
+│   ├── main.js
+│   └── main.less
+├── imports
+│   ├── services
+│   │   └── instagramDataService.js
+│   └── ui
+│       ├── components
+│       │   ├── app
+│       │   │   ├── app.html
+│       │   │   ├── app.js
+│       │   │   ├── app.less
+│       │   │   └── variables.less
+│       │   └── instagramLoginButton
+│       │       ├── instagramLoginButton.html
+│       │       ├── instagramLoginButton.js
+│       │       └── instagramLoginButton.less
+│       └── pages
+│           ├── home
+│           │   ├── home.html
+│           │   ├── home.js
+│           │   └── home.less
+│           ├── oauth
+│           │   ├── oauth.html
+│           │   ├── oauth.js
+│           │   └── oauth.less
+│           └── userHome
+│               ├── userHome.html
+│               ├── userHome.js
+│               └── userHome.less
+├── package.json
+├── server
+│   ├── main.js
+│   ├── modules
+│   │   └── _modules.js
+│   └── services
+│       ├── instagramLogin.js
+│       └── oauthProviders.js
+└── settings.json
+</div>
+[/raw]
+
+As you can see, most of the application logic, templates and styles will be written in the <span class="code-quote">import</span> folder. There, we will define our UI components, pages and the data service to retrieve the recent user media. The <span class="code-quote">app</span> component will be used as the main component to configure the application and import the needed dependencies.
+
+The application will have three pages:
+<ul>
+ 	<li>a login page with an Instagram login button. The associated URL path will be <span class="code-quote">/</span>.</li>
+ 	<li>the OAuth page that will display a spinner while the application waits for some back-end logic to be completed. The associated URL path will be <span class="code-quote">/_oauth</span>.</li>
+ 	<li>the userHome with the latest user's media. This page is only accessible for authenticated users. The associated URL path will be <span class="code-quote">/home</span>.</li>
+</ul>
+The <span class="code-quote">client</span> folder will be the entry point of our application from a Meteor's perspective with the <span class="code-quote">index.html</span>, <span class="code-quote">main.js</span> and <span class="code-quote">main.less</span> files. In the <span class="code-quote">server</span> folder, we will write all the server-side code. Finally, we also reveal namespaced modules in the different <span class="code-quote">modules</span> folders.
+
+<h2>Configure the application</h2>
+First, make sure you have defined all the namespaces in the <span class="code-quote">_modules.js</span> files in the <span class="code-quote">server</span> and <span class="code-quote">both</span> folders:
+
+<p class="file-title">/both/modules/_modules.js</p>
+[raw]
+<div hljs>
+Modules = {};
+Modules.both = {};
+</div>
+[/raw]
+
+<p class="file-title">/server/modules/_modules.js</p>
+[raw]
+<div hljs>
+Modules.server = {};
+</div>
+[/raw]
+
+Then, open <span class="code-quote">settings.json</span> and add the following configuration with the <span class="code-quote">clientID</span> and <span class="code-quote">secret</span> of your Instagram client.
+
+<p class="file-title">/settings.json</p>
+[raw]
+<div hljs>
+{
+  "public": {
+    "oAuth": {
+      "instagram": {
+        "clientID": "clientID",
+        "redirectURI": "http://localhost:3000/_oauth"
+      }
+    }
+  },
+  "private": {
+    "oAuth": {
+      "instagram": {
+        "clientID": "clientID",
+        "secret": "secret",
+        "redirectURI": "http://localhost:3000/_oauth",
+        "accessTokenURI": "https://api.instagram.com/oauth/access_token"
+      }
+    }
+  }
+}
+</div>
+[/raw]
+
+The <span class="code-quote">redirectURI</span> keys have to match the path we will later define for the Angular OAuth component. Notice that the <span class="code-quote">secret</span> property is defined in <span class="code-quote">private</span> as we don't want the client to access it. Thus, it will only be accessible server-side.
+
+We now need to insert those settings in Meteor's configuration with the <span class="code-quote">service-configuration</span> package. Open <span class="code-quote">server/services/oauthProviders.js</span> and add the following code:
+
+<p class="file-title">/server/services/oauthProviders.js</p>
+[raw]
+<div hljs hljs-no-escape language="javascript">
+const services = Meteor.settings.private.oAuth;
+
+const configureOAuthProviders = () => {
+    if ( services ) {
+        for( let service in services ) {
+            ServiceConfiguration.configurations.upsert( { service: service }, {
+                $set: services[ service ]
+            });
+        }
+    }
+};
+
+Modules.server.configureOAuthProviders = configureOAuthProviders;
+</div>
+[/raw]
+
+What we did in this code was to read the private oAuth values from <span class="code-quote">settings.json</span>. Then, we defined a function to save the configuration of each service in the database. Finally, we exposed this function to the server namespace <span class="code-quote">Modules.server</span> which we created earlier in order to access it somewhere else.
+
+In <span class="code-quote">server/main.js</span>, we can now call this function when Meteor starts:
+
+<p class="file-title">/server/main.js</p>
+[raw]
+<div hljs hljs-no-escape>
+import { Meteor } from 'meteor/meteor';
+
+Meteor.startup(() =&gt; {
+    Modules.server.configureOAuthProviders();
+});
+</div>
+[/raw]
+
+Note that we are using the new ES6 <span class="code-quote">import</span> keyword to import Meteor's core and tap into the <span class="code-quote">startup()</span> function. For this tutorial, we will use a lot of the new ES6 features. If you are not familiar with them, your can learn more <a href="https://babeljs.io/docs/learn-es2015/" target="_blank" title="Learn more about ES6 features">here</a>.
+
+We have to stop the application and restart it with the new configuration:
+
+[raw]
+<div hljs language="bash">
+meteor --settings settings.json
+</div>
+[/raw]
+
+<h2>Create the main application component</h2>
+As mentioned earlier, <span class="code-quote">app</span> will be the main component of the application. Go to the <span class="code-quote">app</span> folder in <span class="code-quote">imports/ui/components</span> and add the following code to <span class="code-quote">app.js</span>.
+
+<p class="file-title">/imports/ui/components/app.js</p>
+[raw]
+<div hljs language="javascript">
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+import ngMaterial from 'angular-material';
+import uiRouter from 'angular-ui-router';
+
+import './app.html';
+
+class App {}
+
+const name = 'app';
+
+export default angular.module(name, [
+    angularMeteor,
+    uiRouter,
+    ngMaterial
+    ]).component(name, {
+        templateUrl: `imports/ui/components/${name}/${name}.html`,
+        controllerAs: name,
+        controller: App
+    })
+    .config(config);
+
+function config($locationProvider, $mdThemingProvider) {
+    'ngInject';
+    $locationProvider.html5Mode(true);
+    $mdThemingProvider.theme('default')
+      .primaryPalette('blue')
+      .accentPalette('blue');
+}
+</div>
+[/raw]
+
+This code declares a new Angular component named <span class="code-quote">app</span> with other module dependencies (Angular-Meteor, UI-Router and Angular-Material), an HTML template and an empty controller. We also configured the Material color palette and enabled the HTML5 mode for the location to remove the <span class="code-quote">#</span> from the URLs. The <span class="code-quote">'ngInject';</span> instruction will trigger dependency injection during the build process.
+
+Now, open <span class="code-quote">app.html</span> and add the following code to tell Angular to load the views there.
+
+<p class="file-title">/imports/ui/components/app.html</p>
+[raw]
+<div hljs>
+<div ui-view=""></div>
+</div>
+[/raw]
+
+We can also add some styling (the variables will be used later):
+
+<p class="file-title">/imports/ui/components/app.less</p>
+[raw]
+<div hljs language="css">
+@import "variables.less";
+
+body {
+  background: #ECE9E6;
+  background: -webkit-linear-gradient(to left, #ECE9E6 , #FFFFFF);
+  background: linear-gradient(to left, #ECE9E6 , #FFFFFF);
+}
+
+app {
+  display: block;
+  height: 100%;
+}
+
+[ui-view] {
+  height: 100%;
+}
+</div>
+[/raw]
+
+<p class="file-title">/imports/ui/components/variable.less</p>
+[raw]
+<div hljs language="css">
+@black: #565656;
+@grey: #828282;
+@white: #fff;
+</div>
+[/raw]
+
+
+<h2>Bootstrap the application</h2>
+
+Now that the main <span class="code-quote">app</span> component is ready, we can bootstrap the application and load this component. In the <span class="code-quote">client</span> folder, add the following code:
+
+<p class="file-title">/client/main.js</p>
+[raw]
+<div hljs language="javascript">
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+
+import { name as App } from '../imports/ui/components/app/app';
+</div>
+[/raw]
+
+This last line of code will import the <span class="code-quote">app</span> component.
+
+We also need to call it in the view using the <span class="code-quote">app</span> selector.
+
+<p class="file-title">/client/index.html</p>
+[raw]
+<div hljs hljs-no-escape>
+&lt;head&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;base href="/"&gt;
+    &lt;title&gt;Instagram Authentication in Angular-Meteor&lt;/title&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.7/angular-material.min.css"&gt;
+&lt;/head&gt;
+&lt;body ng-app="app" ng-strict-di=""&gt;
+    &lt;app&gt;&lt;/app&gt;
+&lt;/body&gt;
+</div>
+[/raw]
+
+For the styling, we will import the main application stylesheet. Meteor will compile it and serve it to the client.
+<p class="file-title">/client/main.less</p>
+[raw]
+<div hljs>
+@import "../imports/ui/components/app/app.less";
+</div>
+[/raw]
+
+The application structure is done. We can now focus on the different pages and front-end components.
+
+<h2>Create the Instagram login button</h2>
+
+The Instagram login button will be another Angular component. When the user clicks on it, he will be redirected to Instagram's OAuth Authorization page and will be asked to enter his credentials. Uppon succesful authentication, he will be re-directed to the OAuth page.
+
+Let's create the button component. Go to the <span class="code-quote">instagramLoginButton</span> folder in <span class="code-quote">imports/ui/components</span> and add the following code:
+
+<p class="file-title">/imports/ui/components/instagramLoginButton/instagramLoginButton.js</p>
+[raw]
+<div hljs hljs-no-escape language="javascript">
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+
+import './instagramLoginButton.html';
+
+class InstagramLoginButton {
+
+    constructor($window) {
+        'ngInject';
+        this.clientID = Meteor.settings.public.oAuth.instagram.clientID;
+        this.redirectURI = Meteor.settings.public.oAuth.instagram.redirectURI;
+        this._$window = $window;
+    }
+
+    redirectToAuthorization() {
+
+      const IG_AUTH_URL = `https://api.instagram.com/oauth/authorize/?`
+        + `client_id=${this.clientID}`
+        + `&amp;redirect_uri=${this.redirectURI}`
+        + `&amp;response_type=code`
+        + `&amp;scope=follower_list+basic`;
+
+        this._$window.location = IG_AUTH_URL;
+    }
+
+}
+
+const name = 'instagramLoginButton';
+
+export default angular.module(name, [
+    angularMeteor
+  ])
+  .component(name, {
+      templateUrl: `imports/ui/components/${name}/${name}.html`,
+      controllerAs: name,
+      controller: InstagramLoginButton
+  });
+</div>
+[/raw]
+
+This code defines a new <span class="code-quote">instagramLoginButton</span> component with an HTML template and a controller. The controller is an ES6 class with a constructor and a method to redirect the user to Instagram's OAuth Authorization URL. In the constructor, we read the clientID and the redirectURI from <span class="code-quote">settings.json</span> as we need that information to build the redirect URI.
+
+Then, in the component's HTML template, we bind a click event on the Material button. It will call the <span class="code-quote">redirectToAuthorization()</span> method.
+
+<p class="file-title">/imports/ui/components/instagramLoginButton/instagramLoginButton.html</p>
+[raw]
+<div hljs>
+<md-button class="md-raised md-primary" ng-click="instagramLoginButton.redirectToAuthorization()">Login with Instagram</md-button>
+</div>
+[/raw]
+
+We can also add some extra space around the button:
+
+<p class="file-title">/imports/ui/components/instagramLoginButton/instagramLoginButton.less</p>
+[raw]
+<div hljs language="css">
+instagram-login-button {
+  margin: 1.3em 0;
+}
+</div>
+[/raw]
+
+The Instagram login button is now ready to be used. We can create the home page and display the button on it.
+
+<h2>Create the home page</h2>
+
+Head over to the <span class="code-quote">imports/ui/pages/home</span> folder and add the following code:
+
+<p class="file-title">/imports/ui/pages/home/home.js</p>
+[raw]
+<div hljs lang="javascript">
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+import uiRouter from 'angular-ui-router';
+
+import './home.html';
+
+import { name as InstagramLoginButton } from '../../components/instagramLoginButton/instagramLoginButton';
+
+class Home {
+
+    constructor($scope, $reactive, $location) {
+        'ngInject';
+        $reactive(this).attach($scope);
+
+        if(this.userLoggedIn()){
+          $location.path('/home');
+        }
+    }
+
+    userLoggedIn() {
+      return sessionStorage.getItem('ig-token') !== null ? true : false;
+    }
+
+}
+
+const name = 'home';
+
+export default angular.module(name, [
+      angularMeteor,
+      uiRouter,
+      InstagramLoginButton
+    ])
+    .component(name, {
+        templateUrl: `imports/ui/pages/${name}/${name}.html`,
+        controllerAs: name,
+        controller: Home
+    })
+    .config(config);
+
+function config($stateProvider) {
+    'ngInject';
+    $stateProvider
+        .state('home', {
+            url: '/',
+            template: '<home></home>'
+        });
+}
+</div>
+[/raw]
+
+In this code, we created a new <span class="code-quote">home</span> component. This component has a function to check if the user is already logged-in to the application (if the user is logged in, he will be re-directed to the user home page). It also imports the Instagram login button component we created earlier so we can use it in the HTML template.
+
+The HTML template will have the following markup:
+
+<p class="file-title">/imports/ui/pages/home/home.html</p>
+[raw]
+<div hljs language="html">
+<div layout="column" layout-align="center center" layout-fill="layout-fill" class="homepage">
+  <div layout="column" layout-align="center center">
+    <h1>Authentication in Angular-Meteor with Instagram</h1>
+    <h2>Retrieve an Instagram access token, create a new user in the database and login in the Meteor application.</h2>
+    <instagram-login-button></instagram-login-button>
+  </div>
+</div>
+</div>
+[/raw]
+
+We can also add some styling:
+
+<p class="file-title">/imports/ui/pages/home/home.less</p>
+[raw]
+<div hljs language="css">
+.homepage {
+
+  h1 {
+    color: @grey;
+    font-size: 1.8em;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    color: @grey;
+    font-style: italic;
+    font-size: 1.2em;
+    font-weight: 200;
+  }
+
+}
+</div>
+[/raw]
+
+The home page of the application is now ready. We can import it into the main <span class="code-quote">app</span> component and add it as a dependency.
+
+<p class="file-title">/imports/ui/components/app/app.js</p>
+[raw]
+<div hljs>
+// Skipped lines
+
+import './app.html';
+import { name as Home } from '../../pages/home/home';
+
+// Skipped lines
+
+export default angular.module(name, [
+    angularMeteor,
+    uiRouter,
+    ngMaterial,
+    Home
+    ]).component(name, {
+        templateUrl: `imports/ui/components/${name}/${name}.html`,
+        controllerAs: name,
+        controller: App
+    })
+    .config(config);
+
+// Skipped lines
+</div>
+[/raw]
+
+You can now navigate to the root of the application and see the login page.
+
+<h2>Server-side code</h2>
+
+Before we continue adding pages to the application, we have to write the server-side logic. We will have three methods to:
+
+<ul>
+  <li>request an Instagram Access Token (we are using the explicit flow)</li>
+  <li>create or update a user in the user collection</li>
+  <li>login the user</li>
+</ul>
+
+Because we want to call those methods from the client, we have to wrap them in <span class="code-quote">Meteor.methods()</span> when we define them on the server. In your Angular-Meteor component controller (client-side), you will be able to call them using <span class="code-quote">this.call('functionToCall', arguments, callback)</span>. This function wraps the <span class="code-quote">Meteor.call()</span> function and ensures the callback runs in an Angular digest cycle to update the view accordingly. You can find more information <a href="http://www.angular-meteor.com/api/1.3.11/call" target="_blank" title="Learn more about call()">here</a>.
+
+Open <span class="code-quote">server/services/instagramLogin.js</span> and add the following functions as an object literal.
+
+<p class="file-title">/server/services/instagramLogin.js</p>
+[raw]
+<div hljs>
+Meteor.methods({
+
+    requestInstagramAccessToken: function(code) {
+
+        function buildRequestParams(code, config) {
+            return {
+                params: {
+                    client_id: config.clientID,
+                    client_secret: config.secret,
+                    grant_type: 'authorization_code',
+                    redirect_uri: encodeURI(config.redirectURI),
+                    code: code,
+                }
+            };
+        }
+
+        const config = ServiceConfiguration.configurations.findOne({service: 'instagram'});
+
+        const requestObject = buildRequestParams(code, config);
+        let response;
+
+        try {
+            response = HTTP.post(config.accessTokenURI, requestObject);
+
+            if (response.error) {
+                throw response.error;
+            }
+            if (typeof response.content === "string") {
+                response.content = JSON.parse(response.content);
+            }
+            if (response.content.error) {
+                throw response.content;
+            }
+        } catch(err) {
+            throw { error: err };
+        }
+
+        return response.content;
+
+    },
+    createOrUpdateUser: function(response) {
+
+        const serviceData = {
+            id: response.user.id,
+            accessToken: response.access_token
+        };
+
+        const options = {
+            profile: {
+                name: response.user.full_name,
+                bio: response.user.bio,
+                picture: response.user.profile_picture,
+                id: response.user.id
+            }
+        };
+
+        return Accounts.updateOrCreateUserFromExternalService('instagram', serviceData, options);
+    },
+    loginUser: function(meteorUser) {
+
+      const userId = meteorUser.userId;
+      const stampedLoginToken = Accounts._generateStampedLoginToken();
+
+      Accounts._insertLoginToken(userId, stampedLoginToken);
+
+      if(stampedLoginToken.token){
+        return stampedLoginToken.token;
+      }
+      else {
+        console.log('Error generating stamped login token');
+      }
+
+    }
+
+});
+</div>
+[/raw]
+
+Let's take a look at this code:
+<ul>
+  <li><span class="code-quote">requestInstagramAccessToken</span> will request an Instagram Access Token. It receives a code as a parameter (the code Instagram returned after a succesful authentication of the user), builds the request parameter object with all the needed information (code, clientID, secret, redirectURI) and posts it to the right Instagram endpoint in order to get an access token. We wrapped this last operation in a <span class="code-quote">try { } catch(err) { }</span> to intercept potential errors.</li>
+  <li><span class="code-quote">createOrUpdateUser</span> receives a response object and creates or updates a Meteor user with the user ID and access token provided by Instagram and the profile information. To do so, we call <span class="code-quote">Accounts.updateOrCreateUserFromExternalService('serviceName', serviceData, options)</span> provided by the <span class="code-quote">Account</span> package we installed earlier. This method is not officially documented as it is private. </li>
+  <li><span class="code-quote">loginUser</span> will generate a login token for the user it receives as a parameter. It will then login the user with that token using the <span class="code-quote">Accounts._insertLoginToken(userId, stampedLoginToken)</span> method.</li>
+</ul>
+
+The back-end is quite simple and will allow us to handle the server-side logic of our Instagram authentication application.  We can now focus on the other pages of the application.
+
+<h2>Create the OAuth page</h2>
+
+The OAuth page will be another Angular component. Its path is mapped to the Instagram redirect URI so we can extract the returned code we will need to request the Instragram access token. This component will also call the back-end functions we just wrote to handle the Instagram Anthentication logic (retrieve the access token, create or update the user and login the user).
+
+Go to <span class="code-quote">imports/ui/pages/oauth/</span> and add the following code:
+
+<p class="file-title">/imports/ui/pages/oauth/oauth.js</p>
+[raw]
+<div hljs hljs-no-escape>
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+import uiRouter from 'angular-ui-router';
+
+import './oauth.html';
+
+class Oauth {
+
+    constructor($location, $stateParams, $scope, $reactive) {
+        'ngInject';
+        $reactive(this).attach($scope);
+        this._$location = $location;
+        this._$scope = $scope;
+        this.code = $stateParams.code;
+        this.requestInstagramAccessToken();
+    }
+
+    requestInstagramAccessToken() {
+
+        this.call('requestInstagramAccessToken', this.code, (error, user) =&gt; {
+            if(user){
+                this.createOrUpdateUser(user);
+                this.setUserToken(user.access_token);
+            }
+            else if(error){
+              console.log('Error requesting Instagram Access Token ', error);
+            }
+        });
+
+    }
+
+    createOrUpdateUser(user) {
+
+        this.call('createOrUpdateUser', user, (error, meteorUser) =&gt; {
+            if(meteorUser){
+                // console.log(meteorUser); =&gt; {type: "instagram", userId: "smk5qGQp7SwExiKk9"}
+                this.loginUser(meteorUser);
+            }
+            else if(error){
+              console.log('Error creating or updating the user ', error);
+            }
+        });
+
+    }
+
+    loginUser(meteorUser) {
+
+      this.call('loginUser', meteorUser, (error, token) =&gt; {
+        if(token){
+          Meteor.loginWithToken(token);
+          this._$location.path('/home');
+          this._$location.search('code', null);
+          this._$scope.$apply();
+        }
+        else if(error){
+          console.log('Error when logging the user in', error);
+        }
+      });
+
+    }
+
+
+    setUserToken(token) {
+        sessionStorage.setItem('ig-token', token);
+    }
+
+}
+
+const name = 'oauth';
+
+export default angular.module(name, [
+    angularMeteor,
+    uiRouter
+]).component(name, {
+    templateUrl: `imports/ui/pages/${name}/${name}.html`,
+    controllerAs: name,
+    controller: Oauth
+})
+.config(config);
+
+function config($stateProvider) {
+    'ngInject';
+    $stateProvider
+        .state('oauth', {
+            url: '/_oauth?code',
+            template: '<oauth></oauth>'
+        });
+}
+</div>
+[/raw]
+
+This Angular component will be called upon successful authentication as we defined <span class="code-quote">'/_oauth?code'</span> for the component state url and because it matches the Instagram redirect URI. Because <span class="code-quote">code</span> is a parameter in the path, we will be able to read the value returned by Instagram. Note that it will also set the user's access token in <span class="code-quote">sessionStorage</span> and handle the redirection to the user home page.
+
+Now, we need to import this new component in our <span class="code-quote">app</span> component.
+
+<p class="file-title">/imports/ui/components/app/app.js</p>
+[raw]
+<div hljs>
+// Skipped lines
+
+import './app.html';
+import { name as Home } from '../../pages/home/home';
+import { name as Oauth } from '../../pages/oauth/oauth';
+
+// Skipped lines
+
+export default angular.module(name, [
+    angularMeteor,
+    uiRouter,
+    ngMaterial,
+    Home,
+    Oauth
+    ]).component(name, {
+        templateUrl: `imports/ui/components/${name}/${name}.html`,
+        controllerAs: name,
+        controller: App
+    })
+    .config(config);
+
+// Skipped lines
+</div>
+[/raw]
+
+<h2>Create the user home page</h2>
+
+We are almost done with the different pages. Now, we will create the user home page that displays the user information and its recent media.
+
+First, let's create the Instagram data service to fetch the user media.
+
+Open <span class="code-quote">imports/services/instagramDataService.js</span> and add the following code:
+
+<p class="file-title">/imports/services/instagramDataService.js</p>
+[raw]
+<div hljs>
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+
+const name = 'instagramDataServiceModule';
+
+export default angular.module(name, [
+      angularMeteor,
+    ])
+    .factory('instagramDataService', ['$http', function($http) {
+
+        let token = sessionStorage.getItem('ig-token');
+
+        return {
+            getRecentUserMedia: function(callback){
+                const endpoint = `https://api.instagram.com/v1/users/self/media/recent/?access_token=${token}&callback=JSON_CALLBACK`;
+                $http.jsonp(endpoint).success(function(response){
+                    callback(response.data);
+                });
+            }
+        }
+
+    }]);
+</div>
+[/raw]
+
+Here, we just defined a simple Angular factory to fetch the recent user media. Due to Instagram API's constraints, we cannot retreive the data using <span class="code-quote">$http.get()</span>: we need to use <span class="code-quote">$http.jsonp()</span> with a callback. Note that we retreived the user's access token from the <span class="code-quote">sessionStorage</span> in order to add it to the query URL.
+
+Go to <span class="code-quote">imports/ui/pages/userHome</span> and add the following code:
+
+<p class="file-title">/imports/ui/pages/userHome/userHome.js</p>
+[raw]
+<div hljs hljs-no-escape>
+import angular from 'angular';
+import angularMeteor from 'angular-meteor';
+import uiRouter from 'angular-ui-router';
+
+import './userHome.html';
+import { name as instagramDataServiceModule } from '../../../services/instagramDataService';
+
+class UserHome {
+
+    constructor($scope, $reactive, $location, $timeout, instagramDataService) {
+        'ngInject';
+        $reactive(this).attach($scope);
+
+        if(!this.userLoggedIn()){
+           $location.path('/');
+        }
+
+        this.user = {};
+        this._$timeout = $timeout;
+        this._$location = $location;
+        this.userMedia = {};
+
+        instagramDataService.getRecentUserMedia((media) =&gt; {
+            this.userMedia = media;
+        });
+
+        this.getLoggedInUser();
+    }
+
+    getLoggedInUser() {
+      // TODO
+      // Find a better way to retrieve the current logged in user.
+      this._$timeout(() =&gt; {
+        this.user = Meteor.user();
+      }, 1000);
+    }
+
+    userLoggedIn() {
+      return sessionStorage.getItem('ig-token') !== null ? true : false;
+    }
+
+    logout() {
+      sessionStorage.removeItem('ig-token');
+      Meteor.logout();
+      this._$location.path('/');
+    }
+
+}
+
+const name = 'userHome';
+
+export default angular.module(name, [
+        angularMeteor,
+        uiRouter,
+        instagramDataServiceModule
+    ]).component(name, {
+        templateUrl: `imports/ui/pages/${name}/${name}.html`,
+        controllerAs: name,
+        controller: UserHome
+    })
+    .config(config);
+
+function config($stateProvider) {
+    'ngInject';
+    $stateProvider
+        .state('userHome', {
+            url: '/home',
+            template: '<user-home></user-home>'
+        });
+}
+</div>
+[/raw]
+
+We defined the new <span class="code-quote">userHome</span> component. This component will call <span class="code-quote">instagramDataService.getRecentUserMedia()</span> to fetch the user media. It also deals with the logout feature and redirections.
+
+Now, let's build the view:
+
+<p class="file-title">/imports/ui/pages/userHome/userHome.html</p>
+[raw]
+<div hljs>
+<div ng-cloak>
+<div layout="column" layout-align="center center" layout-fill="layout-fill" class="profile-container">
+  <div layout="column" layout-align="center center">
+      <h1 class="profile-title">{{ userHome.user.profile.name }}</h1>
+      <img ng-src="{{userHome.user.profile.picture}}" class="profile-image" alt="Current user picture" />
+      <p class="profile-bio">{{ userHome.user.profile.bio }}</p>
+      <code class="profile-id">Meteor userId: {{ userHome.user._id }}</code>
+      <md-button ng-click="userHome.logout()">Logout</md-button>
+  </div>
+</div>
+<div class="recent-media-container">
+  <div layout="column" layout-align="center center">
+    <h2>Recent pictures</h2>
+  </div>
+  <div layout="row" layout-wrap>
+      <div ng-repeat="media in userHome.userMedia" flex="20" class="ig-image-container">
+          <img class="ig-image" ng-src="{{media.images.low_resolution.url}}">
+      </div>
+  </div>
+</div>
+</div>
+</div>
+[/raw]
+
+And add some styling:
+
+<p class="file-title">/imports/ui/pages/userHome/userHome.less</p>
+[raw]
+<div hljs language="css">
+.profile-title {
+  color: @black;
+}
+
+.profile-image {
+  display: block;
+  border-radius: 50%;
+  width: 100px;
+  height: auto;
+}
+
+.profile-bio {
+  font-size: 1.1em;
+  color: @grey;
+}
+
+.profile-id {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: .8em;
+}
+
+.recent-media-container {
+  margin-top: 1.5em;
+  h2 {
+    color: @black;
+  }
+}
+
+.ig-image-container {
+  padding: .4em;
+  overflow: hidden !important;
+  border: 3px solid transparent;
+  border-radius: .5em;
+
+  .ig-image {
+    width: 100%;
+    height: auto;
+    transform: scale(1.2);
+  }
+}
+</div>
+[/raw]
+
+Last, we need to import this new component into the <span class="code-quote">app</span> component.
+
+<p class="file-title">/imports/ui/components/app/app.js</p>
+[raw]
+<div hljs>
+// Skipped lines
+
+import './app.html';
+import { name as Home } from '../../pages/home/home';
+import { name as UserHome } from '../../pages/userHome/userHome';
+import { name as Oauth } from '../../pages/oauth/oauth';
+
+// Skipped lines
+
+export default angular.module(name, [
+      angularMeteor,
+      uiRouter,
+      ngMaterial,
+      Home,
+      UserHome,
+      Oauth
+    ])
+    .component(name, {
+        templateUrl: `imports/ui/components/${name}/${name}.html`,
+        controllerAs: name,
+        controller: App
+    })
+    .config(config);
+
+// Skipped lines
+</div>
+[/raw]
+
+
+<h2>Conclusion</h2>
+The application is now complete. With a few lines of code, we built an Instagram based authentication for Angular-Meteor using the explicit OAuth flow. We still have access to native authentication functions as the user we are dealing with is a Meteor user. A few elements could be improved but we have a good base to start any Angular-Meteor project that needs Instagram as an identity provider. Take a look at <a href="https://github.com/loic-d/meteor-ng-instagram-auth" target="_blank" title="View the final project on GitHub">the final project on GitHub</a>.

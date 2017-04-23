@@ -1,18 +1,26 @@
 (function(){
     'use strict';
 
-    function Article($http, API_ROOT, POST_ENDPOINT){
+    function Article($http, $q, API_ROOT, POST_ENDPOINT){
 
         var isReady = false;
+        var cachedArticles = [];
 
         var _getArticles = function() {
 
-            return $http.get( API_ROOT + POST_ENDPOINT)
-                .then(getArticlesComplete)
-                .catch(getArticlesFailed);
+            if(cachedArticles.length === 0) {
+
+              return $http.get( API_ROOT + POST_ENDPOINT)
+                  .then(getArticlesComplete)
+                  .catch(getArticlesFailed);
+            }
+            else {
+              return $q.when(cachedArticles);
+            }
 
             function getArticlesComplete(response) {
                 isReady = true;
+                cachedArticles = response.data;
                 return response.data;
             }
 
