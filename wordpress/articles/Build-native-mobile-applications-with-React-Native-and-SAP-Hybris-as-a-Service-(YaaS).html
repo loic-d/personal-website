@@ -6,11 +6,11 @@ This article will explore how you can get started with React Native and YaaS to 
 
 <h2>Getting started with SAP Hybris as a Service (YaaS)</h2>
 
-YaaS is a microservice development platform with pre-built tools and services that let you rapidly develop solutions and deploy them to the cloud. To use YaaS, you need to <a href="https://yaas.io" target="_blank">create an account</a> and follow the <a href="https://devportal.yaas.io/tools/builder/" target"_blank">step-by-step guide</a> to get familiar with <a href="https://builder.yaas.io" target"_blank">Builder</a>, the YaaS back-office management tool. This step-by-step guide is part of the <a href="https://devportal.yaas.io/" target"_blank">Dev portal</a>, a place where you can find any YaaS related documentation. This article will focus on consuming microservices in the context of a React Native application.
+YaaS is a microservice development platform with pre-built tools and services that let you rapidly develop solutions and deploy them to the cloud. To use YaaS, you need to <a href="https://yaas.io" target="_blank">create an account</a> and follow the <a href="https://devportal.yaas.io/tools/builder/" target"_blank">step-by-step guide</a> to get familiar with <a href="https://builder.yaas.io" target"_blank">Builder</a>, the YaaS back-office management tool. This step-by-step guide is part of the <a href="https://devportal.yaas.io/" target"_blank">Dev portal</a>, a place where you can find any YaaS related documentation.
 
 To understand how each microservice works, look at its API contract. It gives you the available endpoints that your client can consume. With the <a href="https://api.yaas.io/hybris/product/v2/" target="_blank" title="Product API Console">Product</a> service for example, the <a href="https://api.yaas.io/hybris/product/v2/" target="_blank">API contract</a> will show you that a <span class="code-quote">GET</span> request can be sent to <span class="code-quote">https://api.yaas.io/hybris/product/v2/YOUR_TENANT/products</span> to fetch the list of all products for your tenant. A JSON payload will be returned and your application can then display the products to the user. You need to add a few products first, either from <a href="https://builder.yaas.io" target="_blank" title="Builder">Builder</a> or by sending API calls directly to the service.
 
-Most of the YaaS services are <a href="https://devportal.yaas.io/overview/security/10_authorization.html" target="_blank">protected</a>. This means you need to add an <span class="code-quote">Authorization</span> header containing your access token with every request. In a real client application, you will create an HTTP interceptor that automaticaly appends the generated <span class="code-quote">Authorization</span> header. For example, your React Native app can generate a YaaS access token for a user using the <span class="code-quote">/login</span> endpoint of the <span class="code-quote">customer</span> service, then persist it in <span class="code-quote">AsynStorage</span> and add it to the request header of each API call.
+Most of the YaaS services are <a href="https://devportal.yaas.io/overview/security/10_authorization.html" target="_blank">protected</a>. This means you need to add an <span class="code-quote">Authorization</span> header containing your access token with every request. In a real client application, you will create an HTTP interceptor that automaticaly appends the generated <span class="code-quote">Authorization</span> header. For example, your React Native app can generate a YaaS access token for a user using the <span class="code-quote">/login</span> endpoint of the <a href="https://api.yaas.io/hybris/customer/v1/api-console/index.html" target="_blank">Customer</a> service, then persist it in <span class="code-quote">AsynStorage</span> and add it to the request header of each API call.
 
 <p class="file-title">/src/lib/api.js</p>
 [raw]
@@ -27,7 +27,7 @@ if (apiToken) {
 </div>
 [/raw]
 
-Once the interceptor added the required Authorization header, the request is sent to the microservice. You can use the <a href="https://facebook.github.io/react-native/docs/network.html" target="_blank">Fetch API</a> to load resources from a remote URL. This API exposes a <span class="code-quote">fetch()</span> method returning a <span class="code-quote">Promise</span> that resolves to the <span class="code-quote">Response</span> of your request.
+Once the interceptor added the required Authorization header, the request is sent to the microservice. You can use the <a href="https://facebook.github.io/react-native/docs/network.html" target="_blank">Fetch API</a> to load resources from a remote URL.
 
 <h2>Setup your React Native application</h2>
 Now that you know how to send API calls to a YaaS microservice, create a configuration file exposing the services endpoints, along with your tenant, client ID and the API root.
@@ -63,11 +63,11 @@ export default {
 
 Note that all API calls are sent to the same hostname. This hostname is actually a proxy checking if you have the right permissions to access a resource. If you do, your request will be forwared to the real service deployed on any hosting or cloud platform. With this configuration, you will be able to call the following services:
 <ul>
-  <li><span class="code-quote">customer</span> to login users and get the logged-in user information</li>
-  <li><span class="code-quote">customerlogin</span> to get an anonymous user token before the user is anthenticated</li>
-  <li><span class="code-quote">productdetails</span> to get product details like name, descriptions, prices, images, etc.</li>
-  <li><span class="code-quote">cart</span> to create a cart for the user and add items to this cart</li>
-  <li><span class="code-quote">checkout</span> to place an order</li>
+  <li><a href="https://api.yaas.io/hybris/customer/v1/api-console/index.html" target="_blank">customer</a> to login users and get the logged-in user information</li>
+  <li><a href="https://api.yaas.io/hybris/customerlogin/v1/api-console/index.html" target="_blank">customerlogin</a> to get an anonymous user token before the user is anthenticated</li>
+  <li><a href="https://api.yaas.io/hybris/productdetails/v2/api-console/index.html" target="_blank">productdetails</a> to get product details like name, descriptions, prices, images, etc.</li>
+  <li><a href="https://api.yaas.io/hybris/cart/v1/api-console/index.html" target="_blank">cart</a> to create a cart for the user and add items to this cart</li>
+  <li><a href="https://api.yaas.io/hybris/checkout/v1/api-console/index.html" target="_blank">checkout</a> to place an order</li>
 </ul>
 
 Each endpoint will be added to an <span class="code-quote">AppAPI</span> service with methods to do HTTP operations: <span class="code-quote">get</span>, <span class="code-quote">patch</span>, <span class="code-quote">put</span>, <span class="code-quote">post</span> and <span class="code-quote">delete</span>. This service comes with the <a href="https://github.com/mcnamee/react-native-starter-app" target="_blank" title="React Native Starter App">React Native Starter App</a> used for this project, and allows API calls to be sent in a more verbose way. To get a list of products, you can simply write the following code:
@@ -175,7 +175,7 @@ renderProducts = (products) =&gt; {
 </div>
 [/raw]
 
-With the styling added in this project, each product component will look like this:
+With the styles defined in this project, each product component will look like this:
 
 <div class="row">
   <div class="col-xs-12 col-md-5">
@@ -319,8 +319,8 @@ const orderBody = {
 Take a look at the <a href="https://github.com/loic-d/local-groceries/blob/master/src/redux/cart/actions.js" target="Cart actions">final cart actions<a/>.
 
 <h2>Conclusion</h2>
-Hybris as a Service (YaaS) allows you to rapidly build and deploy solutions using microservices. These services can be used with any kind of client: web pages, IoT devices, native apps, etc. In the context of a React Native application, it is simply done by sending API calls using the <span class="code-quote">Fetch</span> API.
+Hybris as a Service (YaaS) allows you to rapidly build and deploy solutions using microservices. These services can be used with any kind of client: web pages, IoT devices, native apps, etc. In the context of a React Native application, it is simply done by sending API calls using the <a href="https://facebook.github.io/react-native/docs/network.html" target="_blank">Fetch API</a>.
 
-Remember that most of the YaaS services are protected and have different endpoints you can consume. To understand them, read the API contract available at the root of the service. To learn more about the <span class="code-quote">cart</span> service for example, go to <span class="code-quote">https://api.yaas.io/hybris/cart/v1/</span>.
+Remember that most of the YaaS services are protected and have different endpoints you can consume. To understand them, read the API contract available at the root of the service. To learn more about the <a href="https://api.yaas.io/hybris/cart/v1/api-console/index.html" target="_blank">Cart</a> service for example, go to <span class="code-quote">https://api.yaas.io/hybris/cart/v1/</span>.
 
 Hopefuly, this has provided you with the proper basis on how to use YaaS in React Native applications. If you want to see a working project using React Native, Redux and YaaS, checkout <a href="https://github.com/loic-d/local-groceries" target="_blank">this GitHub repository</a>.
