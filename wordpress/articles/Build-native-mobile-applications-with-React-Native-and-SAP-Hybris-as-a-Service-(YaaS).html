@@ -1,14 +1,14 @@
-For the past couple of month, <a href="https://facebook.github.io/react-native/" target="_blank">React Native</a> has become very popular among the mobile developers community. It started with the release of <a href="https://facebook.github.io/react/" target="_blank">React</a>, a library to build web user interfaces. Since React can wrap any imperative view system and does not necessarily rely on the DOM, it was just about time before Facebook released React Native. This framework allows developers to build truly native UIs for Android and iOS using JavaScript and JSX.
+For the past couple of months, <a href="https://facebook.github.io/react-native/" target="_blank">React Native</a> has become very popular in the mobile developers community. It started with the release of <a href="https://facebook.github.io/react/" target="_blank">React</a>, a library to build web user interfaces. Since React can wrap any imperative view system and does not necessarily rely on the DOM, it was just a matter of time before Facebook released React Native. This framework allows developers to build truly native UIs for Android and iOS using JavaScript and JSX.
 
-It provides <a href="https://facebook.github.io/react-native/docs/native-components-ios.html" target="_blank">multiple UI components</a> like scroll view, list view, button, date picker, map view or image for example, among with powerful APIs to build the front-end of your application. For the back-end, <a href="https://market.yaas.io/" target="_blank">YaaS microservices</a> can be leveraged to add features like authentication, user accounts, persistence, or e-commerce functionalities (cart, checkout, order, etc.).
+It provides <a href="https://facebook.github.io/react-native/docs/native-components-ios.html" target="_blank">multiple UI components</a> like scroll view, list view, button, date picker, map view or image, for example, along with powerful APIs to build the front-end of your application. For the back-end, <a href="https://market.yaas.io/" target="_blank">YaaS microservices</a> can be leveraged to add features like authentication, user accounts, persistence, or e-commerce functionalities (cart, checkout, order, etc.).
 
 This article will explore how you can get started with React Native and YaaS to build your next mobile application. To see a working project using React Native and YaaS, take a look at <a href="https://github.com/loic-d/local-groceries" target="_blank">this GitHub repository</a>. The code samples presented below are part of this project.
 
 <h2>Getting started with SAP Hybris as a Service (YaaS)</h2>
 
-YaaS is a microservice development platform with pre-built tools and services that let you rapidly develop solutions and deploy them to the cloud. To use YaaS, you need to <a href="https://yaas.io" target="_blank">create an account</a> and follow the <a href="https://devportal.yaas.io/tools/builder/" target"_blank">step-by-step guide</a> to get familiar with 'Builder', the YaaS back-office management tool. This step-by-step guide is part of the <a href="https://devportal.yaas.io/" target"_blank">Dev portal</a>, a place where you can find any YaaS related documentation. For this article, we will just focus on consuming microservices in the context of a React Native application.
+YaaS is a microservice development platform with pre-built tools and services that let you rapidly develop solutions and deploy them to the cloud. To use YaaS, you need to <a href="https://yaas.io" target="_blank">create an account</a> and follow the <a href="https://devportal.yaas.io/tools/builder/" target"_blank">step-by-step guide</a> to get familiar with <a href="https://builder.yaas.io" target"_blank">Builder</a>, the YaaS back-office management tool. This step-by-step guide is part of the <a href="https://devportal.yaas.io/" target"_blank">Dev portal</a>, a place where you can find any YaaS related documentation. This article will focus on consuming microservices in the context of a React Native application.
 
-To understand how each microservice works, you can look at its API contract (at the root of each service). It gives you the available endpoints that your client can consume. With the <a href="https://api.yaas.io/hybris/product/v2/" target="_blank" title="Product API Console">Product</a> service for example, the <a href="https://api.yaas.io/hybris/product/v2/" target="_blank">API Contract</a> will show you that a <span class="code-quote">GET</span> request can be sent to <span class="code-quote">https://api.yaas.io/hybris/product/v2/YOUR_TENANT/products</span> to fetch the list of all products for your tenant. A JSON payload will be returned and your application can then display the data to the user. Of course, you need to add a few products first (from <a href="https://builder.yaas.io" target="_blank" title="Builder">Builder</a> or by sending API calls directly to the service).
+To understand how each microservice works, look at its API contract. It gives you the available endpoints that your client can consume. With the <a href="https://api.yaas.io/hybris/product/v2/" target="_blank" title="Product API Console">Product</a> service for example, the <a href="https://api.yaas.io/hybris/product/v2/" target="_blank">API contract</a> will show you that a <span class="code-quote">GET</span> request can be sent to <span class="code-quote">https://api.yaas.io/hybris/product/v2/YOUR_TENANT/products</span> to fetch the list of all products for your tenant. A JSON payload will be returned and your application can then display the products to the user. You need to add a few products first, either from <a href="https://builder.yaas.io" target="_blank" title="Builder">Builder</a> or by sending API calls directly to the service.
 
 Most of the YaaS services are <a href="https://devportal.yaas.io/overview/security/10_authorization.html" target="_blank">protected</a>. This means you need to add an <span class="code-quote">Authorization</span> header containing your access token with every request. In a real client application, you will create an HTTP interceptor that automaticaly appends the generated <span class="code-quote">Authorization</span> header. For example, your React Native app can generate a YaaS access token for a user using the <span class="code-quote">/login</span> endpoint of the <span class="code-quote">customer</span> service, then persist it in <span class="code-quote">AsynStorage</span> and add it to the request header of each API call.
 
@@ -27,10 +27,10 @@ if (apiToken) {
 </div>
 [/raw]
 
-Once the interceptor added the required Authorization header, the request is sent to the microservice. You can use the <a href="https://facebook.github.io/react-native/docs/network.html" target="_blank">Fetch API</a> to load resources from a remote URL. This API exposes a <span class="code-quote">fetch()</span> method returning a <span class="code-quote">Promise</span> that resolves to the <span class="code-quote">Response</span> of your request. It is pretty much like <span class="code-quote">XMLHttpRequest</span> but with more powerful features.
+Once the interceptor added the required Authorization header, the request is sent to the microservice. You can use the <a href="https://facebook.github.io/react-native/docs/network.html" target="_blank">Fetch API</a> to load resources from a remote URL. This API exposes a <span class="code-quote">fetch()</span> method returning a <span class="code-quote">Promise</span> that resolves to the <span class="code-quote">Response</span> of your request.
 
 <h2>Setup your React Native application</h2>
-Now that you know how to send API calls to a YaaS microservice, add the different services endpoints in your application. You can create a configuration file exposing these URLs, among with your tenant, client ID and the API root.
+Now that you know how to send API calls to a YaaS microservice, create a configuration file exposing the services endpoints, along with your tenant, client ID and the API root.
 
 <p class="file-title">/src/constants/api.js</p>
 [raw]
@@ -70,7 +70,7 @@ Note that all API calls are sent to the same hostname. This hostname is actually
   <li><span class="code-quote">checkout</span> to place an order</li>
 </ul>
 
-Each endpoint will be added to an <span class="code-quote">AppAPI</span> service with methods to do HTTP operations: <span class="code-quote">get</span>, <span class="code-quote">patch</span>, <span class="code-quote">put</span>, <span class="code-quote">post</span> and <span class="code-quote">delete</span>. This service comes with the <a href="https://github.com/mcnamee/react-native-starter-app" target="_blank" title="React Native Starter App">React Native Starter App</a> used by this project. It allows to send API calls in a more verbose way. For example, to get a list of products, you can simple write the following code:
+Each endpoint will be added to an <span class="code-quote">AppAPI</span> service with methods to do HTTP operations: <span class="code-quote">get</span>, <span class="code-quote">patch</span>, <span class="code-quote">put</span>, <span class="code-quote">post</span> and <span class="code-quote">delete</span>. This service comes with the <a href="https://github.com/mcnamee/react-native-starter-app" target="_blank" title="React Native Starter App">React Native Starter App</a> used for this project, and allows API calls to be sent in a more verbose way. To get a list of products, you can simply write the following code:
 
 [raw]
 <div hljs hljs-no-escape language="javascript">
@@ -82,13 +82,13 @@ AppAPI.products.get()
 </div>
 [/raw]
 
-Note that the service is converting the <span class="code-quote">Response</span> to a plain JS object. Of course, you can also create your own API services and don't necesarily need to use the <a href="https://github.com/mcnamee/react-native-starter-app" target="_blank" title="React Native Starter App">React Native Starter App</a>.
+Note that the service is converting the <span class="code-quote">Response</span> to a plain JS object. You can also create your own API services that don't require the use of <a href="https://github.com/mcnamee/react-native-starter-app" target="_blank" title="React Native Starter App">React Native Starter App</a>.
 
 <h2>Build your first screen</h2>
 
-Now, it is time to build your first screen! It will be a class extending a React <span class="code-quote">Component</span>. This class will expose a <span class="code-quote">render()</span> method where you define the layout using JSX markup. The beauty of React is that you don't need another templating language to add logic to the view: you can rely on JavaScript control structures like <span class="code-quote">forEach</span> for example because JSX is transpilled to JavaScript!
+It's time to build your first screen! It will be a JavaScript class extending a React <span class="code-quote">Component</span>. This class will expose a <span class="code-quote">render()</span> method where you define the layout of the screen using JSX markup. The advantage of React is that you don't need another templating language to add logic to a view: you can rely on JavaScript control structures like <span class="code-quote">forEach</span> because JSX is transpilled to JavaScript.
 
-Let's say you want ot build a page displaying a list of products. First, you need to fetch the data from the YaaS <span class="code-quote">productdetails</span> or <span class="code-quote">product</span> service. You can do it from the component in <span class="code-quote">componentDidMount()</span> or from a parent component and pass the list of products to your component as a prop. If you are not familiar with React Component lifecycle, take a look at the <a href="https://facebook.github.io/react/docs/react-component.html" title="React Component Lifecycle" target="_blank">official documention</a>.
+Let's say you want ot build a page displaying a list of products, first you would need to fetch the data from the YaaS <span class="code-quote">productdetails</span> or <span class="code-quote">product</span> service. This can be done from the component in <span class="code-quote">componentDidMount()</span> or from a parent component and pass the list of products to your component as a prop. If you are not familiar with React Component lifecycle, take a look at the <a href="https://facebook.github.io/react/docs/react-component.html" title="React Component Lifecycle" target="_blank">official documention</a>.
 
 [raw]
 <div hljs hljs-no-escape>
@@ -115,9 +115,9 @@ fetchProducts = () => {
 </div>
 [/raw]
 
-Note that the component receives the action <span class="code-quote">getProducts()</span> as a prop. <a href="https://github.com/reactjs/redux" target="_blank" title="Redux">Redux</a>, a predictable state container for JS apps, allows us to do that by mapping actions to component's props. We also call <span class="code-quote">setState</span> with the fetched products to update the component's state.
+The component receives the action <span class="code-quote">getProducts()</span> as a prop. <a href="https://github.com/reactjs/redux" target="_blank" title="Redux">Redux</a>, a predictable state container for JS apps, allows this by mapping actions to component's props. We also call <span class="code-quote">setState()</span> with the fetched products to update the component's state.
 
-Once the state is updated, you need to iterate over each product and create single product components. The view will display all these product components. Each component has to define a <span class="code-quote">key</span> attribute with a unique value on its root element. This is mandatory when you work with lists: it allows React to identify which items have changed, are added, or are removed.
+Once the state is updated, you need to iterate over each product and create single product components. The view will display all of these products components. Each component has to define a <span class="code-quote">key</span> attribute with a unique value on its root element. This is mandatory when you work with lists: it allows React to identify which items have been changed, added, or removed.
 
 Your function to render the list of products could look like this:
 
@@ -175,7 +175,7 @@ renderProducts = (products) =&gt; {
 </div>
 [/raw]
 
-With the provided styling, each product component will look like this:
+With the styling added in this project, each product component will look like this:
 
 <div class="row">
   <div class="col-xs-12 col-md-5">
@@ -183,9 +183,9 @@ With the provided styling, each product component will look like this:
   </div>
 </div>
 
-Note that we are able to <span class="code-quote">push</span> JSX components to the <span class="code-quote">productsJsx</span> Array and return it. If you have a long list of products, to improve the performance, it is a good idea to only render a few products at the time.
+We are able to <span class="code-quote">push</span> JSX components to the <span class="code-quote">productsJsx</span> Array and return it. If you have a long list of products, it is a good idea to only render a few products at a time for performance matters.
 
-You can now call <span class="code-quote">renderProducts</span> in the Component's <span class="code-quote">render</span> method.
+You can now call <span class="code-quote">renderProducts()</span> in the Component's <span class="code-quote">render</span> method.
 
 [raw]
 <div hljs hljs-no-escape>
@@ -202,11 +202,11 @@ render = () => (
 </div>
 [/raw]
 
-As you can see, We are mixing JSX and JavaScript. It is possible because <span class="code-quote">renderProducts</span> is returning an Array of JSX components.
+As seen, we are mixing JSX and JavaScript. This is possible because <span class="code-quote">renderProducts()</span> is returning an Array of JSX components.
 
 <h2>Add E-commerce features in minutes</h2>
 
-What if you want users to add items to a cart and checkout? YaaS provides the <a href="https://api.yaas.io/hybris/cart/v1/" target="_blank" title="Cart API Console">Cart</a> and <a href="https://api.yaas.io/hybris/checkout/v1/" target="_blank" title="Checkout API Console">Checkout</a> microservices. For example, to create a cart for a user, you can send a <span class="code-quote">POST</span> request to <span class="code-quote">https://api.yaas.io/hybris/cart/v1/YOUR_TENANT/carts</span> providing at least the <span class="code-quote">currency</span> and <span class="code-quote">customerId</span> in the request body. In your application, it could look like this:
+Want users to add items to a cart and checkout? YaaS provides the <a href="https://api.yaas.io/hybris/cart/v1/" target="_blank" title="Cart API Console">Cart</a> and <a href="https://api.yaas.io/hybris/checkout/v1/" target="_blank" title="Checkout API Console">Checkout</a> microservices. To create a cart for a user, send a <span class="code-quote">POST</span> request to <span class="code-quote">https://api.yaas.io/hybris/cart/v1/YOUR_TENANT/carts</span> providing the <span class="code-quote">currency</span> and <span class="code-quote">customerId</span> in the request body:
 
 [raw]
 <div hljs hljs-no-escape>
@@ -226,7 +226,7 @@ export function createCart(userId) {
 </div>
 [/raw]
 
-To add an item to cart, we need to specify the id of the cart where the item needs to be added, the item id and its price. The following function will do the job. Note that we are using Redux here. It allows us to dispatch an event containing the updated cart to the store. We want to make sure the application always contains the most updated state. A message is also displayed to the user using the <a href="https://facebook.github.io/react-native/docs/alert.html" target="_blank" title="Alert API">Alert</a> API.
+In order to add items to a cart, the following function will do the job (we are using Redux here). This allows us to dispatch an event containing the updated cart to the store. We want to make sure the application always has the most updated state. A message is also displayed to the user using the <a href="https://facebook.github.io/react-native/docs/alert.html" target="_blank" title="Alert API">Alert</a> API.
 
 <p class="file-title">/src/redux/cart/actions.js</p>
 [raw]
@@ -277,7 +277,7 @@ export function addItemToCart(cartId, itemYrn, itemPrice) {
 [/raw]
 </div>
 
-The next step is to place an order. The <span class="code-quote">checkout</span> service provides an endpoint where you can send a <span class="code-quote">POST</span> request: <span class="code-quote">https://api.yaas.io/hybris/checkout/v1/YOUR_TENANT/checkouts/order</span>. In the request body, you need to provide all the information required by the service, like the user's details including the billing and shipping addresses, the payment method, the cart Id, the total price and the currency.
+The next step is to place an order. The <span class="code-quote">checkout</span> service provides an endpoint where you can send a <span class="code-quote">POST</span> request to <span class="code-quote">https://api.yaas.io/hybris/checkout/v1/YOUR_TENANT/checkouts/order</span>. In the request body, provide all the information required by the service: user's details including the billing and shipping addresses, payment method, cart Id, total price and currency.
 
 [raw]
 <div hljs hljs-no-escape language="javascript">
@@ -319,8 +319,8 @@ const orderBody = {
 Take a look at the <a href="https://github.com/loic-d/local-groceries/blob/master/src/redux/cart/actions.js" target="Cart actions">final cart actions<a/>.
 
 <h2>Conclusion</h2>
-Hybris as a Service (YaaS) allows you to rapidly build and deploy solutions using microservices. These services can be used with any kind of client like a web page, an IoT device, a native app, etc. In the context of a React Native application, it is just a matter of sending API calls with the <span class="code-quote">Fetch</span> API and then display the data to the user.
+Hybris as a Service (YaaS) allows you to rapidly build and deploy solutions using microservices. These services can be used with any kind of client: web pages, IoT devices, native apps, etc. In the context of a React Native application, it is simply done by sending API calls using the <span class="code-quote">Fetch</span> API.
 
-Remember that most of the YaaS services are protected and they all have different endpoints that you can consume. To understand how they work, read the API contract of each service. It is available at the root of the service. For example, to understand how the <span class="code-quote">cart</span> service works, go to <span class="code-quote">https://api.yaas.io/hybris/cart/v1/</span>.
+Remember that most of the YaaS services are protected and have different endpoints you can consume. To understand them, read the API contract available at the root of the service. To learn more about the <span class="code-quote">cart</span> service for example, go to <span class="code-quote">https://api.yaas.io/hybris/cart/v1/</span>.
 
-This article did not cover other important topics like Redux, routing or testing. The goal was to introduce you to YaaS in the context of a React Native application and see how fast you can build your next project. If you want to see a working project using React Native and YaaS, checkout <a href="https://github.com/loic-d/local-groceries" target="_blank">this GitHub repository</a>.
+Hopefuly, this has provided you with the proper basis on how to use YaaS in React Native applications. If you want to see a working project using React Native, Redux and YaaS, checkout <a href="https://github.com/loic-d/local-groceries" target="_blank">this GitHub repository</a>.
