@@ -20,5 +20,5 @@ Generate a build for production:
 Deployment on your VPS:
 * update `vpsUrl` in `gulpfile.js` so it matches your VPS URL
 * run `gulp deploy-prod`. This will copy the content of the `./build` folder to `/var/www/html/` on your VPS (you can update the path in `gulpfile.js` if needed)
-* note that the `.htaccess` file in `/apache` folder will also be copied at the root of the build to display pretty urls in the browser
+* note that the `.htaccess` file in `/apache` folder will also be copied at the root of the build to allow pretty urls in the browser
 
