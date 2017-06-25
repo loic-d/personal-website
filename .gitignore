@@ -1,0 +1,12 @@
+/dist/
+/node_modules/
+src/app/app.templates.js
+src/assets/js/angular.min.js
+src/assets/js/angular-animate.min.js
+src/assets/js/angular-highlightjs.min.js
+src/assets/js/angular-resource.min.js
+src/assets/js/angular-route.min.js
+src/assets/js/angular-sanitize.min.js
+src/assets/js/segment.min.js
+src/assets/css/style.css
+.idea/

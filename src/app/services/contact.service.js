@@ -1,16 +1,16 @@
 (function(){
     'use strict';
 
-    function Contact($http, $q){
-
-        var POST_URL = 'https://www.loic-delaubier.com/assets/php/contact.php';
+    function Contact($http, $q, CONTACT_SCRIPT){
 
         var _sendMessage = function(data) {
 
             var deferred = $q.defer();
 
-            $http.post(POST_URL, data, {
-                  headers : {'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'}
+            $http.post(CONTACT_SCRIPT, data, {
+                  headers : {
+                    'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+                  }
                 })
                 .then(function(){
                     deferred.resolve()

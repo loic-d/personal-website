@@ -1,3 +1,3 @@
 <script>
-  window.location = "http://loic-delaubier.com/";
+    window.location = "https://loic-delaubier.com/";
 </script>

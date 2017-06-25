@@ -8,7 +8,6 @@
             'ngResource',
             'ngAnimate',
             'ngSanitize',
-            'ui.bootstrap',
             'app.templates',
             'app.constants',
             'app.helpers',

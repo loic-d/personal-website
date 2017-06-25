@@ -8,13 +8,15 @@ var rimraf = require('gulp-rimraf');
 var ngAnnotate = require('gulp-ng-annotate');
 var replace = require('gulp-replace-path');
 var templateCache = require('gulp-angular-templatecache');
+var flatten = require('gulp-flatten');
+var exec = require('child_process').exec;
 
 
 /*==============================
 =            SETUP             =
 ==============================*/
 
-// Define the bases for dev (/src) and prod (/build) environment
+// Define the bases for src and build folders
 var bases = {
     src: 'src/',
     build: 'build/'
@@ -36,6 +38,9 @@ var templateCacheOptions = {
   standalone: true
 };
 
+// VPS URL
+var vpsUrl = 'vps135707.vps.ovh.ca';
+
 
 /*==============================
 =            TASKS             =
@@ -48,26 +53,31 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./src/assets/css'));
 });
 
-// Tasks to add the HTML templates to the Angular template cache for dev and prod
-gulp.task('templates-dev', function() {
+// Task to add the HTML templates to the Angular template cache
+gulp.task('templates', function() {
     gulp.src(paths.html_partials, {cwd: bases.src})
         .pipe(templateCache('app.templates.js', templateCacheOptions))
         .pipe(gulp.dest('src/app'));
 });
 
-gulp.task('templates-prod', function() {
-    gulp.src(paths.html_partials, {cwd: bases.src})
-        .pipe(replace(/\/src\/assets\/img\//g, '/assets/img/'))
-        .pipe(templateCache('app.templates.js', templateCacheOptions))
-        .pipe(gulp.dest('src/app'));
+// Taks to copy required npm libraries in assets/js folder
+gulp.task('copy-npm-libs', function() {
+    return gulp.src(
+      [
+        '../node_modules/angular/angular.min.js',
+        '../node_modules/angular-*/*.min.js',
+        '../node_modules/segment-js/dist/segment.min.js'
+      ], {cwd: bases.src})
+        .pipe(flatten())
+        .pipe(gulp.dest('src/assets/js'));
 });
 
 // Task to combine, minify and annotate the index.html JavaScript files, and minify the HTML page
-gulp.task('minify', ['sass', 'clean'], function(){
+gulp.task('minify', ['copy-npm-libs', 'sass', 'clean'], function(){
     return gulp.src('./src/index.html')
         .pipe(usemin({
             html: [minifyHtml({ empty: true })],
-            jsLibs: [uglify()],
+            jsLibs: [ngAnnotate(), uglify()],
             jsApp: [ngAnnotate(), uglify()]
         }))
         .pipe(gulp.dest('build'));
@@ -80,7 +90,7 @@ gulp.task('clean', function() {
 });
 
 // Task to copy the assets to the production folder
-gulp.task('copy', ['clean'], function() {
+gulp.task('copy-app-assets', ['clean'], function() {
     gulp.src(paths.fonts, {cwd: bases.src})
         .pipe(gulp.dest(bases.build + 'assets/fonts/'));
 
@@ -94,6 +104,16 @@ gulp.task('copy', ['clean'], function() {
         .pipe(gulp.dest(bases.build + 'assets/php/'));
 });
 
+// Task to copy the Apache .htaccess at the root of the production folder
+gulp.task('copy-htaccess', function() {
+    gulp.src('apache/.htaccess')
+      .pipe(gulp.dest(bases.build));
+});
+
+// Task to create a robot.txt file for production (not part of source control)
+gulp.task('create-robot-txt', function() {
+    exec(`echo $'User-agent: *\nDisallow:' > ${__dirname}/build/robot.txt`);
+});
 
 /*==============================
 =         WEB SERVERS          =
@@ -102,7 +122,9 @@ gulp.task('copy', ['clean'], function() {
 // Task to start a local server for dev environment
 gulp.task('connect-dev', function () {
     connect.server({
-        port: 8080
+        root: 'src',
+        port: 8080,
+        fallback: 'src/index.html'
     });
 });
 
@@ -110,7 +132,8 @@ gulp.task('connect-dev', function () {
 gulp.task('connect-prod', function () {
     connect.server({
         root: 'build',
-        port: 8000
+        port: 8000,
+        fallback: 'build/index.html'
     });
 });
 
@@ -120,10 +143,38 @@ gulp.task('connect-prod', function () {
 ==============================*/
 
 // Build sequence
-gulp.task('build', ['sass', 'templates-dev']);
+gulp.task('build-dev', ['copy-npm-libs', 'sass', 'templates']);
 
-// Deploy sequence
-gulp.task('deploy', ['sass', 'templates-prod', 'minify', 'copy']);
+// Build for production sequence
+gulp.task('build-prod', ['copy-npm-libs', 'sass', 'templates', 'minify', 'copy-app-assets']);
 
 // Default sequence
-gulp.task('default', ['build', 'connect-dev']);
+gulp.task('default', ['build-dev', 'connect-dev']);
+
+
+/*===============================
+=          DEPLOYMENT           =
+================================*/
+
+gulp.task('deploy-prod', function () {
+    gulp.start('create-robot-txt');
+    gulp.start('copy-htaccess');
+    exec(`ssh root@${vpsUrl} 'rm -rf /var/www/html/*'`, function(error) {
+        if (error) {
+            console.log('Something went wrong. Error: ', error);
+        } else {
+            console.log('Old build deleted');
+        }
+    });
+    exec(`cd ${__dirname}/`);
+    exec(`scp -r ./build/. root@${vpsUrl}:/var/www/html`, function(error) {
+        if (error) {
+            console.log('Something went wrong. Error: ', error);
+        } else {
+            console.log('New build copied');
+            console.log('-----------');
+            console.log('  SUCCESS  ');
+            console.log('-----------');
+        }
+    });
+});

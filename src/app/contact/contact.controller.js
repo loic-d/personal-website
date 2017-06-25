@@ -13,19 +13,16 @@
         this.sendMessage = function() {
 
             this.displayForm = false;
-            Loading.triggerInProgress('sending...');
+            Loading.triggerInProgress('Sending...');
 
             Contact.sendMessage(this.formData).then(function() {
-
                 $timeout(function() {
-
                     Loading.triggerSuccess('Message sent. I will get back to you soon.');
-
                 }, 1500);
-
-            }, function() {
-
-
+            }, function(error) {
+                $timeout(function() {
+                    Loading.triggerFail('Something went wrong. Please try again.');
+                }, 1500);
             })
         };
 

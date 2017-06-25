@@ -1,8 +1,8 @@
 <nav>
     <ul>
-        <li ng-hide="homeCtrl.isHomePage" ng-class="{active: navCtrl.isCurrent('/')}"><a ng-href="#/">Home</a></li>
-        <li class="pulse" ng-class="{active: navCtrl.isCurrent('/articles') || navCtrl.isCurrent('/about/:id')}"><a ng-href="#/articles">Articles</a></li>
-        <li ng-class="{active: navCtrl.isCurrent('/about')}"><a ng-href="#/about">About</a></li>
-        <li ng-class="{active: navCtrl.isCurrent('/contact')}"><a ng-href="#/contact">Contact</a></li>
+        <li ng-hide="homeCtrl.isHomePage" ng-class="{active: navCtrl.isCurrent('/')}"><a href="/" title="Home">Home</a></li>
+        <li class="pulse" ng-class="{active: navCtrl.isCurrent('/articles') || navCtrl.isCurrent('/about/:id')}"><a href="/articles" title="Articles">Articles</a></li>
+        <li ng-class="{active: navCtrl.isCurrent('/about')}"><a href="/about" title="About">About</a></li>
+        <li ng-class="{active: navCtrl.isCurrent('/contact')}"><a href="/contact" title="Contact">Contact</a></li>
     </ul>
 </nav>

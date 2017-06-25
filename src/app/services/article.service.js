@@ -25,7 +25,7 @@
             }
 
             function getArticlesFailed(error) {
-              console.log('Could not get posts, Error: ', error);
+              console.log('Could not get posts. Error: ', error);
             }
 
         }
@@ -41,7 +41,7 @@
             }
 
             function getArticleFailed(error) {
-              console.log('Could not get post -->', slug, ', Error: ', error);
+              console.log('Could not get post ', slug, '. Error: ', error);
             }
 
         }

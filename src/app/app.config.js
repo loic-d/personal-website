@@ -1,7 +1,8 @@
 (function(){
     'use strict';
 
-    function config($routeProvider, hljsServiceProvider){
+    function config($routeProvider, $locationProvider, hljsServiceProvider) {
+        $locationProvider.html5Mode(true);
 
         $routeProvider
             .when('/', {

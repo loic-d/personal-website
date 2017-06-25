@@ -9,21 +9,26 @@
 
                 var STATE = Loading.STATE;
 
-                scope.loadingService = Loading;
+                var loadingPath = getPath('.loading-path');
+                var successPath = getPath('.success-path');
+                var errorPath = getPath('.error-path');
+                var errorPath2 = getPath('.error-path2');
 
+                var loadingSegment = new Segment(loadingPath, 0, 0.1);
+                var successSegment = new Segment(successPath, 0, 0.1);
+                var errorSegment = new Segment(errorPath, 0, 0.1);
+                var error2Segment = new Segment(errorPath2, 0, 0.1);
+
+                scope.loadingService = Loading;
                 scope.display = false;
                 scope.state = null;
                 scope.message = null;
 
-
                 scope.$watch('loadingService.display', function() {
-
                     scope.display = scope.loadingService.display;
-
                 });
 
                 scope.$watch('loadingService.state', function() {
-
                     scope.state = scope.loadingService.state;
 
                     switch(scope.state){
@@ -42,51 +47,55 @@
                             successAnimation();
                             break;
 
+                        case STATE.FAIL: {
+                            setErrorStyles();
+                            errorAnimation();
+                            break;
+                        }
+
                     }
 
                 });
 
 
                 scope.$watch('loadingService.message', function() {
-
                     scope.message = scope.loadingService.message;
-
                 });
 
 
 
-                // -------------------------------
+                // --------------------------------------------------------------------------
                 // Animation functions and helpers
-                // -------------------------------
+                // Adapted from https://x-team.com/blog/creating-loading-buttons-svg-segment/
+                // --------------------------------------------------------------------------
 
                 function getPath(path){
                     return elem[0].querySelector(path);
                 }
 
-                var loading_path = getPath('.loading-path'),
-                    success_path = getPath('.success-path'),
-                    loading_segment = new Segment(loading_path, 0, 0.1),
-                    success_segment = new Segment(success_path, 0, 0.1);
-
 
                 // Clear
                 function setClearStyles() {
-                    loading_path.style.visibility = 'hidden';
-                    success_path.style.visibility = 'hidden';
+                    loadingPath.style.visibility = 'hidden';
+                    successPath.style.visibility = 'hidden';
+                    errorPath.style.visibility = 'hidden';
+                    errorPath2.style.visibility = 'hidden';
                 }
 
 
                 // In Progress
                 function setInProgressStyles() {
-                    loading_path.style.visibility = 'visible';
-                    success_path.style.visibility = 'hidden';
+                    loadingPath.style.visibility = 'visible';
+                    successPath.style.visibility = 'hidden';
+                    errorPath.style.visibility = 'hidden';
+                    errorPath2.style.visibility = 'hidden';
                 }
 
                 function inProgressAnimation(){
-                    loading_segment.draw('15%', '25%', 0.2, {callback: function(){
-                        loading_segment.draw('75%', '150%', 0.3, {circular:true, callback: function(){
-                            loading_segment.draw('70%', '75%', 0.3, {circular:true, callback: function(){
-                                loading_segment.draw('100%', '100% + 0.1', 0.4, {circular:true, callback: function(){
+                    loadingSegment.draw('15%', '25%', 0.2, {callback: function(){
+                        loadingSegment.draw('75%', '150%', 0.3, {circular:true, callback: function(){
+                            loadingSegment.draw('70%', '75%', 0.3, {circular:true, callback: function(){
+                                loadingSegment.draw('100%', '100% + 0.1', 0.4, {circular:true, callback: function(){
                                     inProgressAnimation();
                                 }});
                             }});
@@ -97,14 +106,28 @@
 
                 // Success
                 function setSuccessStyles() {
-                    loading_path.style.visibility = 'hidden';
-                    success_path.style.visibility = 'visible';
+                    loadingPath.style.visibility = 'hidden';
+                    successPath.style.visibility = 'visible';
+                    errorPath.style.visibility = 'hidden';
+                    errorPath2.style.visibility = 'hidden';
                 }
 
-                function successAnimation(){
-                    success_segment.draw('100% - 50', '100%', 0.4, {callback: function(){}});
+                function successAnimation() {
+                    successSegment.draw('100% - 50', '100%', 0.4);
                 }
 
+                // Error
+                function setErrorStyles() {
+                  loadingPath.style.visibility = 'hidden';
+                  successPath.style.visibility = 'hidden';
+                  errorPath.style.visibility = 'visible';
+                  errorPath2.style.visibility = 'visible';
+                }
+
+                function errorAnimation() {
+                  errorSegment.draw('100% - 21.25', '100%', 0.4);
+                  error2Segment.draw('100% - 21.25', '100%', 0.4);
+                }
 
             }
         }
