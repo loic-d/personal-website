@@ -53,9 +53,7 @@ nav {
 .page-home {
 
   nav ul li {
-
     &:nth-child(2) {
-
       a {
         color: rgba($blue, .9);
       }
@@ -63,9 +61,7 @@ nav {
       &:hover:after {
         background: rgba($blue, .9);
       }
-
     }
-
   }
 
 }

@@ -16,11 +16,15 @@
     font-weight: 100;
     margin: .45em 0;
   }
-
 }
 
-@media screen and (max-width: $mobile){
+.page-home .pulse {
+  -webkit-animation-delay: .6s;
+  animation-delay: .6s;
+  @include animation('pulse 1.1s both ease-in');
+}
 
+@media screen and (max-width: $mobile) {
   .page-home {
 
     nav {
@@ -45,5 +49,4 @@
     }
 
   }
-
 }

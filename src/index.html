@@ -1,87 +1,86 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Passionate Software Developer focusing on building web applications and user interfaces with great usability and experience for end users. Strong interest in the JavaScript ecosystem, UI development and open-source technologies.">
+<html ng-app="app">
+  <head>
+    <title ng-bind="$root.title + ' | Loïc de Laubier, Software Developer in Montreal'">Home | Loïc de Laubier, Software Developer in Montreal</title>
+    <base href="/">
 
-  <title>Loïc de Laubier - Front-end Software Developer in Montreal</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Passionate Software Developer focusing on building web applications and user interfaces with great usability and experience for end users.">
 
-  <base href="/">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,100">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Serif">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,100">
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=PT+Serif">
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- build:jsLibs /assets/js/libs.js -->
+    <script src="./assets/js/highlight.min.js"></script>
+    <script src="./assets/js/segment.min.js"></script>
+    <script src="./assets/js/angular.min.js"></script>
+    <script src="./assets/js/angular-resource.min.js"></script>
+    <script src="./assets/js/angular-route.min.js"></script>
+    <script src="./assets/js/angular-animate.min.js"></script>
+    <script src="./assets/js/angular-sanitize.min.js"></script>
+    <script src="./assets/js/angular-highlightjs.min.js"></script>
+    <!-- endbuild -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-77905101-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
 
-  <!-- build:jsLibs /assets/js/libs.js -->
-  <script src="./assets/js/highlight.min.js"></script>
-  <script src="./assets/js/segment.min.js"></script>
-  <script src="./assets/js/angular.min.js"></script>
-  <script src="./assets/js/angular-resource.min.js"></script>
-  <script src="./assets/js/angular-route.min.js"></script>
-  <script src="./assets/js/angular-animate.min.js"></script>
-  <script src="./assets/js/angular-sanitize.min.js"></script>
-  <script src="./assets/js/angular-highlightjs.min.js"></script>
-  <!-- endbuild -->
+  <body ng-class="bodyClass" ng-cloak>
 
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-77905101-1', 'auto');
-    ga('send', 'pageview');
-  </script>
-</head>
+    <div class="main-container">
+        <div ng-view class="view-container"></div>
+        <canvas></canvas>
+    </div>
 
-<body ng-app="app" ng-class="bodyClass" ng-cloak>
-  <div class="main-container">
-      <div ng-view class="view-container"></div>
-      <canvas></canvas>
-  </div>
+    <!-- build:jsApp /assets/js/app.js -->
+    <script src="assets/js/canvas.js"></script>
 
-  <!-- build:jsApp /assets/js/app.js -->
-  <script src="assets/js/canvas.js"></script>
+    <script src="app/app.templates.js"></script>
 
-  <script src="app/app.templates.js"></script>
+    <script src="app/helpers/bootstrap.js"></script>
+    <script src="app/helpers/compile.helper.js"></script>
 
-  <script src="app/helpers/bootstrap.js"></script>
-  <script src="app/helpers/compile.helper.js"></script>
+    <script src="app/services/bootstrap.js"></script>
+    <script src="app/services/article.service.js"></script>
+    <script src="app/services/contact.service.js"></script>
+    <script src="app/services/page.service.js"></script>
 
-  <script src="app/services/bootstrap.js"></script>
-  <script src="app/services/article.service.js"></script>
-  <script src="app/services/contact.service.js"></script>
-  <script src="app/services/page.service.js"></script>
+    <script src="app/home/bootstrap.js"></script>
+    <script src="app/home/home.controller.js"></script>
 
-  <script src="app/home/bootstrap.js"></script>
-  <script src="app/home/home.controller.js"></script>
+    <script src="app/articles/bootstrap.js"></script>
+    <script src="app/articles/articles.controller.js"></script>
+    <script src="app/articles/articles.filters.js"></script>
+    <script src="app/articles/article-single.controller.js"></script>
 
-  <script src="app/articles/bootstrap.js"></script>
-  <script src="app/articles/articles.controller.js"></script>
-  <script src="app/articles/articles.filters.js"></script>
-  <script src="app/articles/article-single.controller.js"></script>
+    <script src="app/about/bootstrap.js"></script>
+    <script src="app/about/about.controller.js"></script>
 
-  <script src="app/about/bootstrap.js"></script>
-  <script src="app/about/about.controller.js"></script>
+    <script src="app/contact/bootstrap.js"></script>
+    <script src="app/contact/contact.controller.js"></script>
 
-  <script src="app/contact/bootstrap.js"></script>
-  <script src="app/contact/contact.controller.js"></script>
+    <script src="app/components/bootstrap.js"></script>
+    <script src="app/components/navigation.controller.js"></script>
+    <script src="app/components/navigation.directive.js"></script>
+    <script src="app/components/loading.service.js"></script>
+    <script src="app/components/loading.directive.js"></script>
+    <script src="app/components/social-icons.directive.js"></script>
+    <script src="app/components/about-widget.directive.js"></script>
 
-  <script src="app/components/bootstrap.js"></script>
-  <script src="app/components/navigation.controller.js"></script>
-  <script src="app/components/navigation.directive.js"></script>
-  <script src="app/components/loading.service.js"></script>
-  <script src="app/components/loading.directive.js"></script>
-  <script src="app/components/social-icons.directive.js"></script>
-  <script src="app/components/about-widget.directive.js"></script>
-
-  <script src="app/app.constants.js"></script>
-  <script src="app/app.module.js"></script>
-  <script src="app/app.config.js"></script>
-  <!-- endbuild -->
-</body>
+    <script src="app/app.constants.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/app.config.js"></script>
+    <!-- endbuild -->
+  </body>
 </html>

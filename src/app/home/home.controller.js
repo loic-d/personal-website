@@ -2,7 +2,6 @@
     'use strict';
 
     function HomeController(Article) {
-
         this.pageClass = 'page-home';
         this.isHomePage = 'true';
 

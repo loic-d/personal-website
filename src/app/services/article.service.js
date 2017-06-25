@@ -32,7 +32,7 @@
 
         var _getArticleBySlug = function(slug) {
 
-            return $http.get( API_ROOT + POST_ENDPOINT + '?filter[name]=' + slug)
+            return $http.get( API_ROOT + POST_ENDPOINT + '?slug=' + slug)
                 .then(getArticleComplete)
                 .catch(getArticleFailed);
 

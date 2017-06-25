@@ -6,21 +6,25 @@
 
         $routeProvider
             .when('/', {
+                title: 'Home',
                 controller: 'HomeController',
                 controllerAs: 'homeCtrl',
                 templateUrl:'app/home/home.html'
             })
             .when('/contact', {
+                title: 'Contact',
                 controller: 'ContactController',
                 controllerAs: 'contactCtrl',
                 templateUrl: 'app/contact/contact.html'
             })
             .when('/about', {
+                title: 'About',
                 controller: 'AboutController',
                 controllerAs: 'aboutCtrl',
                 templateUrl: 'app/about/about.html'
             })
             .when('/articles', {
+                title: 'Articles',
                 controller: 'ArticlesController',
                 controllerAs: 'articlesCtrl',
                 templateUrl: 'app/articles/articles.html'
@@ -37,12 +41,13 @@
             hljsServiceProvider.setOptions({
           		tabReplace: '  '
           	});
-
     }
 
-    function run($rootScope, $animate){
-
+    function run($rootScope, $route, $animate){
         $rootScope.$on('$routeChangeSuccess', function (event, currentRoute) {
+            // Update page title
+            $rootScope.title = $route.current.title;
+
             switch(currentRoute.templateUrl) {
                 case 'app/articles/articles.html':
                   $rootScope.bodyClass = 'articles-list';
@@ -60,7 +65,6 @@
         });
 
         $animate.enabled(true);
-
     }
 
     angular

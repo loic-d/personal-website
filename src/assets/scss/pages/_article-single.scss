@@ -7,6 +7,7 @@
     width: 90%;
     margin: 0 auto;
     max-width: inherit;
+    transition: none !important;
   }
 
   .main-container {
@@ -133,13 +134,15 @@
       margin-right: .25em;
     }
   }
+}
 
+body.article-single .ng-enter {
+  @include animation('fadeIn .5s both ease-in');
+  z-index: 8888;
 }
 
 @media screen and (max-width: $mobile){
-
   .article-single {
-
     .view-container {
       width: 98%;
       padding: .4em;
@@ -155,7 +158,5 @@
         overflow-x: scroll;
       }
     }
-
   }
-
 }

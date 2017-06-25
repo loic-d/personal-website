@@ -5,9 +5,9 @@
   bottom: 0;
   left: 0;
   z-index: 1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 canvas {
@@ -24,11 +24,10 @@ canvas {
 .view-container {
   width: auto;
   max-width: 550px;
-  padding: 2em 1em;
+  padding: 1em;
 }
 
 @media screen and (max-width: $mobile){
-
   .view-container {
     width: 100%;
     padding: 1.5em .7em;
@@ -37,5 +36,4 @@ canvas {
   canvas {
     display: none !important;
   }
-
 }

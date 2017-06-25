@@ -1,17 +1,6 @@
-.ng-enter {
-  @include animation('scaleUp .5s both ease-in');
-  z-index: 8888;
-}
-
 .no-animate {
   @include transform('none !important');
   @include animation('none !important');
-}
-
-.page-home .pulse {
-  -webkit-animation-delay: .6s;
-  animation-delay: .6s;
-  @include animation('pulse 1.1s both ease-in');
 }
 
 @include keyframes(scaleUp) {
@@ -27,6 +16,15 @@
   }
   to {
     transform:rotate(360deg);
+  }
+}
+
+@include keyframes(fadeIn) {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
