@@ -111,8 +111,8 @@ gulp.task('copy-htaccess', function() {
 });
 
 // Task to create a robot.txt file for production (not part of source control)
-gulp.task('create-robot-txt', function() {
-    exec(`echo $'User-agent: *\nDisallow:' > ${__dirname}/build/robot.txt`);
+gulp.task('create-robots-txt', function() {
+    exec(`echo $'User-agent: *\nDisallow:' > ${__dirname}/build/robots.txt`);
 });
 
 /*==============================
@@ -157,7 +157,7 @@ gulp.task('default', ['build-dev', 'connect-dev']);
 ================================*/
 
 gulp.task('deploy-prod', function () {
-    gulp.start('create-robot-txt');
+    gulp.start('create-robots-txt');
     gulp.start('copy-htaccess');
     exec(`ssh root@${vpsUrl} 'rm -rf /var/www/html/*'`, function(error) {
         if (error) {
