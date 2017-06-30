@@ -39,7 +39,7 @@ var templateCacheOptions = {
 };
 
 // VPS URL
-var vpsUrl = 'vps135707.vps.ovh.ca';
+var VPS_URL = 'vps135707.vps.ovh.ca';
 
 
 /*==============================
@@ -159,7 +159,7 @@ gulp.task('default', ['build-dev', 'connect-dev']);
 gulp.task('deploy-prod', function () {
     gulp.start('create-robots-txt');
     gulp.start('copy-htaccess');
-    exec(`ssh root@${vpsUrl} 'rm -rf /var/www/html/*'`, function(error) {
+    exec(`ssh root@${VPS_URL} 'rm -rf /var/www/html/*'`, function(error) {
         if (error) {
             console.log('Something went wrong. Error: ', error);
         } else {
@@ -167,7 +167,7 @@ gulp.task('deploy-prod', function () {
         }
     });
     exec(`cd ${__dirname}/`);
-    exec(`scp -r ./build/. root@${vpsUrl}:/var/www/html`, function(error) {
+    exec(`scp -r ./build/. root@${VPS_URL}:/var/www/html`, function(error) {
         if (error) {
             console.log('Something went wrong. Error: ', error);
         } else {
