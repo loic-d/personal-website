@@ -56,6 +56,7 @@
     font-style: italic;
     font-weight: 100;
     margin-bottom: 2.5em;
+
     time {
       font-size: .9em;
     }
@@ -74,6 +75,7 @@
       &::selection {
         background: rgba($blue, .1);
       }
+
       &::-moz-selection {
         background: $blue;
       }
@@ -136,11 +138,6 @@
   }
 }
 
-body.article-single .ng-enter {
-  @include animation('fadeIn .5s both ease-in');
-  z-index: 8888;
-}
-
 @media screen and (max-width: $mobile) {
   .article-single {
     .view-container {
@@ -153,6 +150,20 @@ body.article-single .ng-enter {
       padding: 1.2em;
       margin-top: 1em;
       margin-bottom: 1em;
+
+      h1 {
+        font-size: 1.5em;
+        line-height: 1.25em;
+      }
+
+      h2 {
+        font-size: 1.25em;
+        line-height: 1.4em;
+      }
+
+      .file-title {
+        font-size: 1em;
+      }
 
       [hljs] {
         overflow-x: scroll;

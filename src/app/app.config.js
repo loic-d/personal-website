@@ -56,7 +56,7 @@
                     $rootScope.bodyClass = 'article-single';
                     break;
                 case 'app/about/about.html':
-                    $rootScope.bodyClass = 'body-about';
+                    $rootScope.bodyClass = 'about';
                     break;
                 default:
                     $rootScope.bodyClass = '';

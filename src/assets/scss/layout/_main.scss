@@ -27,12 +27,14 @@ canvas {
   padding: 1em;
 }
 
-@media screen and (max-width: $mobile){
+@media screen and (max-width: $tablet) {
   .view-container {
     width: 100%;
-    padding: 1.5em .7em;
+    padding: .75em;
   }
+}
 
+@media screen and (max-width: $mobile) {
   canvas {
     display: none !important;
   }

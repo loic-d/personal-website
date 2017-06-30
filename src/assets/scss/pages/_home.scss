@@ -18,18 +18,18 @@
   }
 }
 
-.page-home .pulse {
-  -webkit-animation-delay: .6s;
-  animation-delay: .6s;
-  @include animation('pulse 1.1s both ease-in');
+.page-home {
+  .pulse {
+    @include animation-delay('.6s');
+    @include animation('pulse 1.1s both ease-in');
+  }
 }
 
 @media screen and (max-width: $mobile) {
   .page-home {
-
     nav {
       a {
-        font-size: .8em;
+        font-size: .95em;
       }
     }
 
@@ -38,15 +38,9 @@
       margin-bottom: .75em;
     }
 
-    p {
-
-      font-size: .9em;
-
-    }
-
+    p,
     p + p {
-      font-size: .9em;
+      font-size: .95em;
     }
-
   }
 }

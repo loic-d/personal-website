@@ -40,9 +40,7 @@
       color: rgba($blue, .6);
       @include transition(.2s all ease-in);
     }
-
   }
-
 }
 
 .btn-twitter {
@@ -50,7 +48,7 @@
   margin: 1em 0;
 }
 
-@media screen and (max-width: $mobile){
+@media screen and (max-width: $mobile) {
   .btn-twitter {
     max-width: 65%;
   }

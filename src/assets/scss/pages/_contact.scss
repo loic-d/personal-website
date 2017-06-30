@@ -108,9 +108,11 @@
 }
 
 
-@media screen and (max-width: $mobile){
+@media screen and (max-width: $mobile) {
   .page-contact {
     min-width: inherit;
+    padding-right: 1em;
+    padding-left: 1em;
   }
 
   .actions .row [class^='col-'] {
