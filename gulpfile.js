@@ -171,17 +171,17 @@ gulp.task('deploy-prod', function () {
             console.log('Something went wrong. Error: ', error);
         } else {
             console.log('Old build deleted');
-        }
-    });
-    exec(`cd ${__dirname}/`);
-    exec(`scp -r ./build/. root@${VPS_URL}:/var/www/html`, function(error) {
-        if (error) {
-            console.log('Something went wrong. Error: ', error);
-        } else {
-            console.log('New build copied');
-            console.log('-----------');
-            console.log('  SUCCESS  ');
-            console.log('-----------');
+            exec(`cd ${__dirname}/`);
+            exec(`scp -r ./build/. root@${VPS_URL}:/var/www/html`, function(error) {
+                if (error) {
+                    console.log('Something went wrong. Error: ', error);
+                } else {
+                    console.log('New build copied');
+                    console.log('-----------');
+                    console.log('  SUCCESS  ');
+                    console.log('-----------');
+                }
+            });
         }
     });
 });
