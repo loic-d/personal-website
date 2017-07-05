@@ -104,9 +104,15 @@ gulp.task('copy-app-assets', ['clean'], function() {
         .pipe(gulp.dest(bases.build + 'assets/php/'));
 });
 
-// Task to copy the Apache .htaccess at the root of the production folder
+// Task to copy the Apache .htaccess at the root of the production build folder
 gulp.task('copy-htaccess', function() {
     gulp.src('apache/.htaccess')
+      .pipe(gulp.dest(bases.build));
+});
+
+// Task to copy the sitemap at the root of the production build folder
+gulp.task('copy-sitemap', function() {
+    gulp.src('sitemap.xml')
       .pipe(gulp.dest(bases.build));
 });
 
@@ -159,6 +165,7 @@ gulp.task('default', ['build-dev', 'connect-dev']);
 gulp.task('deploy-prod', function () {
     gulp.start('create-robots-txt');
     gulp.start('copy-htaccess');
+    gulp.start('copy-sitemap');
     exec(`ssh root@${VPS_URL} 'rm -rf /var/www/html/*'`, function(error) {
         if (error) {
             console.log('Something went wrong. Error: ', error);

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://loic-delaubier.com/</loc>
+  </url>
+  <url>
+    <loc>https://loic-delaubier.com/articles</loc>
+  </url>
+  <url>
+    <loc>https://loic-delaubier.com/articles/native-apps-with-yaas-and-react-native</loc>
+  </url>
+  <url>
+    <loc>https://loic-delaubier.com/articles/authentication-with-instagram-in-angular-meteor</loc> 
+  </url>
+  <url>
+    <loc>https://loic-delaubier.com/about</loc>
+  </url>
+  <url>
+    <loc>https://loic-delaubier.com/contact</loc>
+  </url>
+</urlset>
