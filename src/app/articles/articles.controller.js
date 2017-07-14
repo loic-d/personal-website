@@ -10,6 +10,8 @@
         this.isBusy = true;
 
         Article.getArticles().then(function(articles) {
+            //TODO: Remove splice
+            articles.splice(0,1);
             this.articles = articles;
             this.isBusy = false;
         }.bind(this));
