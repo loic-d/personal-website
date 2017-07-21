@@ -86,15 +86,6 @@
      pre {
        min-width: 500px;
      }
-
-     // Quick fix for JSX rendering
-     .xml {
-       white-space: pre;
-
-       .hljs-tag .hljs-name {
-         text-transform: capitalize;
-       }
-     }
   }
 
   .code-quote {
