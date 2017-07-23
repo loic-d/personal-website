@@ -34,6 +34,15 @@
       ga('create', 'UA-77905101-1', 'auto');
       ga('send', 'pageview');
     </script>
+
+    <script>
+        // https://medium.com/@david.gilbertson/the-only-way-to-detect-touch-with-javascript-7791a3346685
+        window.addEventListener('touchstart', function onTouchStart() {
+            document.body.classList.add('is-touch-device');
+            // See _navigation.scss. Removes iOS double tap issue with :hover
+            window.removeEventListener('touchstart', onTouchStart, false);
+        }, false);
+    </script>
   </head>
 
   <body ng-class="bodyClass" ng-cloak>
