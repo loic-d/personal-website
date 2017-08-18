@@ -23,7 +23,8 @@ nav {
         @include transition('width .35s ease, background-color .35s ease');
       }
 
-      &:hover:after, &.active:after {
+      &:hover:after,
+      &.active:after {
         display: block;
         width: 95%;
         background: rgba($black, .6);
@@ -39,7 +40,7 @@ nav {
         text-transform: uppercase;
         color: $black;
         font-size: 1em;
-        font-weight: normal;
+        font-weight: 300;
         letter-spacing: .01em;
       }
     }
