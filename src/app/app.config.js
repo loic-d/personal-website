@@ -7,7 +7,7 @@
         $routeProvider
             .when('/', {
                 title: 'Home',
-                description: 'Passionate Software Developer focusing on building web applications and user interfaces with great usability and experience for end users.',
+                description: 'Passionate Software Developer focusing on building web applications and user interfaces with superior usability and experience for end users.',
                 controller: 'HomeController',
                 controllerAs: 'homeCtrl',
                 templateUrl:'app/home/home.html'

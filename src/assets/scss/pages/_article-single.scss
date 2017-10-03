@@ -47,7 +47,27 @@
     color: $light-black;
     font-family: $main-font;
     margin-top: 1.4em;
-    font-size: 1.8em;
+    margin-bottom: 1.6em;
+    font-size: 2em;
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -22px;
+      height: 1px;
+      background: rgba($black, .6);
+      width: 15%;
+    }
+  }
+
+  h3 {
+    text-align: left;
+    color: $light-black;
+    font-family: $main-font;
+    margin-top: 1.2em;
+    font-size: 1.5em;
   }
 
   .article-meta {
@@ -82,9 +102,10 @@
   }
 
   [hljs] {
-     pre {
-       min-width: 500px;
-     }
+    pre {
+      min-width: 500px;
+      margin-bottom: 1.75em;
+    }
   }
 
   .code-quote {
@@ -149,6 +170,10 @@
       h2 {
         font-size: 1.25em;
         line-height: 1.4em;
+
+        &:after {
+          bottom: -15px;
+        }
       }
 
       .file-title {
