@@ -1,44 +1,52 @@
-User interface components have become the central piece of any modern web application. By building <strong>reusable components</strong> with a well-defined API, front-ent developers can deliver features faster with a consistent look and feel across the application. In some scenarios however, they'll want to add <strong>styling or layout customizations</strong> to existing components without building a new one from scratch. Think about a list displaying a collection of elements. What if you want this list to be able to show orders but also products or categories? Your list will have to support <strong>custom renderers</strong>.
+User interface components have become the central piece of any modern web application. By building <strong>reusable components</strong> with a well-defined API, front-end developers can deliver features faster with a consistent look and feel across the application. In some scenarios however, they might want to add <strong>styling or layout customizations</strong> to existing components without building a new one from scratch. Think about a generic list displaying a collection of elements. What if you want this list to display orders, but also products or payment methods? Your list will have to support <strong>custom renderers</strong>.
 
 <h2>What we will be building</h2>
-In this article, we will be building a generic <span class="code-quote">list</span> component that iterates over a collection of objects and display each item with the provided renderer.
+In this article, we will be building a generic list component that iterates over a collection of objects and display each item with a custom renderer. Each item component will be <strong>rendered programmatically using Angular's core APIs</strong>.
 
 This component will support:
 <ul>
     <li>a custom <strong>renderer</strong> component for the <strong>header</strong></li>
     <li>a custom <strong>renderer</strong> component for the <strong>items</strong> in the collection</li>
     <li><strong>event handlers</strong> for the header and renderer items</li>
-    <li><strong>pagination</strong> to navigate through the collection of items</li>
 </ul>
 
-Our component will have the following API:
+The API of the component will look like this:
 
 [raw]
 <div hljs hljs-no-escape>
 &lt;list [data]="items"
-        [renderer]="itemRendererComponent"
-        (onItemEvents)="handleItemEvent($event)"
-        [header]="headerRendererComponent"
-        (onHeaderEvents)="handleHeaderEvent($event)"&gt;
-    &lt;pagination
-            [currentPage]="listingPagination.startingPage"
-            (onPageChange)="listingPagination.onPageChange($event)"
-            (onNext)="listingPagination.onNext($event)"
-            (onPrev)="listingPagination.onPrevious($event)"&gt;
-    &lt;/pagination>
+    [renderer]="itemRendererComponent"
+    (onItemEvents)="handleItemEvent($event)"
+    [header]="headerRendererComponent"
+    (onHeaderEvents)="handleHeaderEvent($event)"&gt;
 &lt;/list&gt;
 </div>
 [/raw]
 
-To see the final result, take a look at <a href="https://plnkr.co/edit/tpl:AvJOMERrnz94ekVua0u5?p=preview" target="_blank">this Plunker</a>.
+Here is the final <a href="https://plnkr.co/edit/tpl:AvJOMERrnz94ekVua0u5?p=preview" target="_blank">Plunker</a>.
+
+<iframe style="border: 1px solid #999;width: 100%; height: 400px" src="https://embed.plnkr.co/nekZVJgXHjeRzBWQHX8k/" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
 
 <h2>Create the list component</h2>
 
-We will skip the project boilerplate and jump directly to the <span class="code-quote">list</span> component creation. It is a TypeScript class implementing <span class="code-quote">OnInit</span> and <span class="code-quote">OnChanges</span>. We are using the <span class="code-quote">@Component</span> decorator to declare it as an Angular component. Since we need to pass data to the component and emmit events, we'll also use the <span class="code-quote">@Input</span>, and <span class="code-quote">@Output</span> decorators.
+We will skip the project boilerplate and jump directly to the creation of the <span class="code-quote">list</span> component. It will be a TypeScript class implementing <span class="code-quote">OnInit</span> and <span class="code-quote">OnChanges</span>. We are using the <span class="code-quote">@Component</span> decorator to declare it as an Angular component. Since we need to pass data to the component and emmit events, we'll also use the <span class="code-quote">@Input</span>, and <span class="code-quote">@Output</span> decorators.
 
-The collection to display will be received as <span class="code-quote">data</span>, and the custom renderer components will be passed as <span class="code-quote">renderer</span> for the items and <span class="code-quote">header</span> for the list header. Renderers will have to extend the <span class="code-quote">ListItemRendererComponent</span> or <span class="code-quote">ListHeaderRendererComponent</span> to ensure correct property binding. Emitted events will be available in <span class="code-quote">onItemEvents</span> and <span class="code-quote">onHeaderEvents</span>.
+The component supports three <strong>inputs</strong>:
+<ul>
+    <li><span class="code-quote">[data]</span> will receive the collection to display</li>
+    <li><span class="code-quote">[renderer]</span> will receive the custom renderer for items</li>
+    <li><span class="code-quote">[header]</span> will received the custom renderer for the header</li>
+</ul>
 
-We will also use a few modules from Angular's core:
+Renderers will have to extend the <span class="code-quote">ListItemRendererComponent</span> or <span class="code-quote">ListHeaderRendererComponent</span> to <strong>ensure correct property binding</strong>.
+
+It will also support two <strong>outputs</strong>:
+<ul>
+    <li><span class="code-quote">(onItemEvents)</span> allows us to pass a function handler for events emitted by items</li>
+    <li><span class="code-quote">(onHeaderEvents)</span> allows us to pass a function handler for events emitted by the header</li>
+</ul>
+
+Finally, we'll rely on the following modules from <strong>Angular's core</strong>:
 <ul>
     <li><span class="code-quote">ComponentFactoryResolver</span> to get a hold of the renderer component's factory for the header and items</li>
     <li><span class="code-quote">ReflectiveInjector</span>, an injection container used for instantiating objects and resolving dependencies</li>
@@ -46,7 +54,9 @@ We will also use a few modules from Angular's core:
     <li><span class="code-quote">ViewContainerRef</span> to manipulate child views</li>
 </ul>
 
-Open your favorite IDE or start a new Plunker and add the following files.
+Open your favorite IDE or start a new Plunker and start creating the <span class="code-quote">list</span> component.
+
+<h3>Definition of the generic list component</h3>
 
 <p class="file-title">/src/list.component.ts</p>
 
@@ -79,9 +89,6 @@ import { ListHeaderRendererComponent } from './src/list-header-renderer.componen
         &lt;/div&gt;
         &lt;div class='list__content'&gt;
             &lt;ng-template #itemsrenderer&gt;&lt;/ng-template&gt;
-        &lt;/div&gt;
-        &lt;div class='list__pagination'&gt;
-            &lt;ng-content&gt;&lt;/ng-content&gt;
         &lt;/div&gt;
     &lt;/div&gt;`
 })
@@ -123,11 +130,13 @@ export class ListComponent implements OnInit, OnChanges {
 </div>
 [/raw]
 
-According to the template we defined, the custom header renderer will be injected in <span class="code-quote">&lt;ng-template #headerrenderer&gt;&lt;/ng-template&gt;</span> and the list of items will be rendered in <span class="code-quote">&lt;ng-template #itemsrenderer&gt;&lt;/ng-template&gt;</span>. We add the missing implementations later on.
+According to the template we defined, the custom header renderer and the list of items will be respectively injected in <span class="code-quote">&lt;ng-template #headerrenderer&gt;&lt;/ng-template&gt;</span> and <span class="code-quote">&lt;ng-template #itemsrenderer&gt;&lt;/ng-template&gt;</span>.
 
-<h2>Define base components for renderers</h2>
+<h2>Define base components for custom renderers</h2>
 
-To make sure the renderers have access to the current data item and can dispatch valid events, we'll create two base components that developers need to extend.
+To make sure the renderers have access to the <strong>current data item</strong> and <strong>dispatch valid events</strong>, we will create two base components. Developers must extend them.
+
+<h3>Base component for headers</h3>
 
 <p class="file-title">/src/list-header-renderer.component.ts</p>
 
@@ -150,6 +159,8 @@ export class ListHeaderRendererComponent implements IListHeaderRenderer {
 }
 </div>
 [/raw]
+
+<h3>Base component for items</h3>
 
 <p class="file-title">/src/list-item-renderer.component.ts</p>
 
@@ -179,7 +190,9 @@ export class ListItemRendererComponent implements IListItemRenderer {
 </div>
 [/raw]
 
-Let's write the interfaces and events class we used in the components above.
+Let's write the <strong>interfaces</strong> and <strong>events class</strong> we just used in the above components.
+
+<h3>Required interfaces and class</h3>
 
 <p class="file-title">/src/list-header-renderer.interface.ts</p>
 
@@ -212,14 +225,14 @@ export class ListHeaderEvent {
 </div>
 [/raw]
 
-<p class="file-title">/src/list-header-renderer.interface.ts</p>
+<p class="file-title">/src/list-item-renderer.interface.ts</p>
 
 [raw]
 <div hljs hljs-no-escape>
 import { EventEmitter } from '@angular/core';
 
 /**
-* Interface a list item renderer must implement
+* Interface a list item renderer must implement.
 */
 export interface IListItemRenderer {
     out: EventEmitter&lt;ListItemEvent&gt;;
@@ -238,7 +251,9 @@ export class ListItemEvent {
 
 <h2>Create renderers for the header and the items</h2>
 
-Create two new components. They will be your renderers for the header and the items. In this example, the markup will display a list of JavaScript frameworks but you can come up with your own.
+Create two new components. We will use them as renderers for the header and the items. In this example, the markup will display a list of JavaScript frameworks but you can come up with a renderer for your collection (products, orders, users, payment methods, etc.).
+
+<h3>Your custom renderer for the header</h3>
 
 <p class="file-title">/src/your-custom-item-renderer.component.ts</p>
 
@@ -252,18 +267,19 @@ import { ListItemEvent } from '/list-item-renderer.interface'
 @Component({
 selector: 'your-custom-item-renderer',
 template: `
-    &lt;div class="list-row"&gt;
-        &lt;span&gt;{{ dataItem.name }}&lt;/span&gt;
-        &lt;span&gt;{{ dataItem.company }}&lt;/span&gt;
-        &lt;span&gt;{{ dataItem.releaseDate }}&lt;/span&gt;
+    &lt;div class='list-item'&gt;
+        &lt;span class='list-item__name'&gt;{{ dataItem.name }}&lt;/span&gt;
+        &lt;span class='list-item__company'&gt;{{ dataItem.company }}&lt;/span&gt;
+        &lt;span class='list-item__date'&gt;{{ dataItem.releaseDate }}&lt;/span&gt;
     &lt;/div&gt;`
 })
 export class YourCustomItemRendererComponent extends ListItemRendererComponent {}
 </div>
 [/raw]
 
-The renderer will have access to the current <span class="code-quote">dataItem</span> because it is extending <span class="code-quote">ListItemRendererComponent</span>. To resolve the current item, we used the Angular <span class="code-quote">Injector</span> in <span class="code-quote">/src/list-item-renderer.component.ts</span>.
+The renderer will have access to the current <span class="code-quote">dataItem</span> as it is extending <span class="code-quote">ListItemRendererComponent</span>. To resolve the current item, we used the Angular <span class="code-quote">Injector</span> in <span class="code-quote">/src/list-item-renderer.component.ts</span>.
 
+<h3>Your custom renderer for the items</h3>
 
 <p class="file-title">/src/your-custom-header-renderer.component.ts</p>
 
@@ -277,10 +293,10 @@ import { ListHeaderEvent } from './list-header-renderer.interface'
 @Component({
 selector: 'your-custom-header-renderer',
 template: `
-    &lt;div class="list-header"&gt;
-        &lt;span class="list-header__name"&gt;Name&lt;/span&gt;
-        &lt;span class="list-header__company"&gt;Company&lt;/span&gt;
-        &lt;span class="list-header__release-date"&gt;Release date&lt;/span&gt;
+    &lt;div class='list-header'&gt;
+        &lt;span class='list-header__name'&gt;Name&lt;/span&gt;
+        &lt;span class='list-header__company'&gt;Company&lt;/span&gt;
+        &lt;span class='list-header__release-date'&gt;Release date&lt;/span&gt;
     &lt;/div&gt;`
 })
 export class YourCustomHeaderRendererComponent extends ListHeaderRendererComponent {}
@@ -289,7 +305,7 @@ export class YourCustomHeaderRendererComponent extends ListHeaderRendererCompone
 
 <h2>Use the list component</h2>
 
-Add the following code where you want to display the list. Your custom renderers need to be added as <span class="code-quote">entryComponents</span> of the module. The data is directly hardcoded in the component but in a real application this data would be retrieved from a service.
+You can now use the list component in your application (we are loading it in the root <span class="code-quote">app</span> component in our example). Note that your custom renderers must be added as <span class="code-quote">entryComponents</span> of the module. For demo purposes, the data is directly hardcoded in the component but in a real application this data would most probably be retrieved from a service.
 
 <p class="file-title">/src/app.ts</p>
 
@@ -385,7 +401,11 @@ export class AppModule {}
 </div>
 [/raw]
 
-Since we haven't implemented <span class="code-quote">renderListHeader()</span> and <span class="code-quote">renderListItems()</span> in the <span>list component</span>, nothing is going to be displayed on the front-end. Let's write the content the these two functions.
+Since we haven't implemented <span class="code-quote">renderListHeader()</span> and <span class="code-quote">renderListItems()</span> in the <span>list component</span>, nothing is going to be displayed on the front-end. Let's add the missing implementations.
+
+<h2>Implement the header and list renderer functions</h2>
+
+<h3>Header renderer function</h3>
 
 <p class="file-title">/src/list.component.ts</p>
 
@@ -408,7 +428,7 @@ renderListHeader(): void {
     // Create the component
     const component = factory.create(injector);
 
-    // Subscribe and emit received events
+    // Subscribed to received events and emit them
     component.instance.out.subscribe((event: ListingHeaderEvent) => {
         this.headerEvents.emit(event);
     });
@@ -419,7 +439,7 @@ renderListHeader(): void {
 </div>
 [/raw]
 
-The header of the list is now displayed on the front-end and uses the custom renderer we provided. Let's add some styling to it.
+The header of the list is now displayed on the front-end. It uses the custom renderer we provided. Let's add some styling to it.
 
 [raw]
 <div hljs language="css">
@@ -449,3 +469,240 @@ your-custom-header-renderer .list-header span {
 }
 </div>
 [/raw]
+
+<h3>Items renderer function</h3>
+
+<p class="file-title">/src/list.component.ts</p>
+
+[raw]
+<div hljs hljs-no-escape>
+renderListItems(): void {
+    // Clear the view
+    this.itemsrenderer.clear();
+
+    // Iterate over the collection of items and render each row
+    this.data.forEach((dataItem) => {
+        // Provide each dataItem as an input for the created item component
+        let inputProviders = [{provide: 'dataItem', useValue: dataItem}];
+
+        // Resolve the dependencies of inputs to provide to the item component
+        let resolvedInputs = ReflectiveInjector.resolve(inputProviders);
+
+        // Create the injector for the list items renderer
+        let injector
+            = ReflectiveInjector.fromResolvedProviders(resolvedInputs, this.itemsrenderer.parentInjector);
+
+        // Get the item component's factory
+        let factory = this.componentFactoryResolver.resolveComponentFactory(this.renderer);
+
+        // Create the item component
+        let component = factory.create(injector);
+
+        // Inject the item component in the view
+        this.itemsrenderer.insert(component.hostView);
+    });
+}
+</div>
+[/raw]
+
+The items in the list are now displayed on the front-end. It uses the custom renderer we provided for each item. Let's add some styling to make it look good.
+
+[raw]
+<div hljs language="css">
+your-custom-item-renderer .list-item {
+    width: 100%;
+    display: flex;
+}
+
+your-custom-item-renderer .list-item span {
+    flex: 0 0 calc(100%/3);
+    padding: .5em 0 .5em .35em;
+}
+
+your-custom-item-renderer .list-item .list-item__name {
+    /* We will add a click action on this item later on */
+    cursor: pointer;
+}
+</div>
+[/raw]
+
+At this point, you should have something like this:
+
+<div class="row">
+    <div class="col-xs-12 col-md-7">
+        <img src="http://loic-delaubier.com/api/wp-content/uploads/2017/07/Custom_renderers_list-1.png" alt="List with custom renderers" width="698" height="273" class="content-img" />
+    </div>
+</div>
+
+This list doesn't do much... Let's add the necessary code to support click events.
+
+<h2>Add support for event emitting</h2>
+
+In order to emit events, we will update the item renderer. We will add a click event listener using Angular's <span class="code-quote">(click)</span> binding, and propagate a valid event. Remember that we defined an interface for <span class="code-quote">ListingItemEvent</span> earlier? We can now use it. You can come up with your own mouse interactions. In this example, clicking on an item will select it as favorite.
+
+<p class="file-title">/src/your-custom-item-renderer.component.ts</p>
+
+[raw]
+<div hljs hljs-no-escape>
+import { Component } from '@angular/core'
+
+import { ListItemRendererComponent } from './list-item-renderer.component'
+import { ListItemEvent } from '/list-item-renderer.interface'
+
+@Component({
+selector: 'your-custom-item-renderer',
+template: `
+    &lt;div class='list-item'&gt;
+        &lt;span class='list-item__name' (click)='setFavorite(dataItem)'&gt;{{dataItem.name}}&lt;/span&gt;
+        &lt;span class='list-item__company'&gt;{{dataItem.company}}&lt;/span&gt;
+        &lt;span class='list-item__date'&gt;{{dataItem.releaseDate}}&lt;/span&gt;
+    &lt;/div&gt;
+    `
+})
+export class YourCustomItemRendererComponent extends ListItemRendererComponent {
+    // Function called on click
+    setFavorite(item): void {
+        // Emit a valid event with an action type and data
+        this.out.emit({
+            event: 'SELECT_FAVORITE',
+            data: item
+        } as ListingItemEvent);
+    }
+}
+</div>
+[/raw]
+
+In the list component, we can now subscribe to the emitted event. Make sure you import <span class="code-quote">ListItemEvent</span> (defined earlier).
+
+<p class="file-title">/src/list.component.ts</p>
+
+[raw]
+<div hljs hljs-no-escape>
+renderListItems(): void {
+    // Skipped lines
+
+    // Subscribe to the event after you retrieved the component
+    component.instance.out.subscribe((event: ListingItemEvent) => {
+        this.onItemEvents.emit({ context: dataItem, ...event });
+    });
+
+    // Skipped lines
+}
+</div>
+[/raw]
+
+Finally, in the main <span class="code-quote">app</span> component, we will add the item events handler. We could have different types of actions so we want to keep this function generic.
+
+<p class="file-title">/src/app.ts</p>
+
+Update the template to pass the item events handler.
+
+[raw]
+<div hljs hljs-no-escape>
+&lt;list [data]='data'
+      [renderer]='yourCustomItemRendererComponent'
+      [header]='yourCustomHeaderRendererComponent'
+      (onItemEvents)="handleItemEvent($event)"&gt;
+&lt;/list&gt;
+</div>
+[/raw]
+
+Then write the item events handler function.
+
+[raw]
+<div hljs hljs-no-escape>
+handleItemEvent($event): void {
+    switch($event.event) {
+        case 'SELECT_FAVORITE':
+            this.selectAsFavorite($event.data);
+            break;
+    }
+}
+
+selectAsFavorite(item): void {
+    if(item) {
+        // TODO: Send API call to your back-end service
+        alert(`${item.name} is your favorite framework!`);
+    }
+}
+</div>
+[/raw]
+
+If you want the header to emit events as well, repeat the same steps using the <span class="code-quote">ListHeaderEvent</span> interface. This will be helpful if you want the user to interact with the header to sort data for example. Don't forget to add <span class="code-quote">(onHeaderEvents)</span> in the template and write the implementation of this function depending on what you want to do.
+
+<p class="file-title">/src/app.ts</p>
+
+[raw]
+<div hljs hljs-no-escape>
+&lt;list [data]="items"
+    [renderer]="itemRendererComponent"
+    (onItemEvents)="handleItemEvent($event)"
+    [header]="headerRendererComponent"
+    (onHeaderEvents)="handleHeaderEvent($event)"&gt;
+&lt;/list&gt;
+</div>
+[/raw]
+
+[raw]
+<div hljs hljs-no-escape>
+handleHeaderEvent($event): void {
+    switch($event.event) {
+        case 'SORT_NAME':
+            this.sortByName();
+            break;
+    }
+}
+</div>
+[/raw]
+
+Here is the final <a href="https://plnkr.co/edit/tpl:AvJOMERrnz94ekVua0u5?p=preview" target="_blank">Plunker</a>.
+
+<iframe style="border: 1px solid #999;width: 100%; height: 400px" src="https://embed.plnkr.co/nekZVJgXHjeRzBWQHX8k/" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+
+<h2>Improvements</h2>
+What we have built so far is pretty simple but you should now have a better understanding of Angular's core APIs to <strong>programmatically render components</strong>. To improve this list component, we could do a few things.
+
+<h3>Add pagination</h3>
+Not supporting pagination could lead to performance issues if the list of items to display is too long. It is also not really user friendly. To resolve this issue, you could implement the following API and rely on content transclusion for the pagination component using <span class="code-quote">&lt;ng-content&gt;&lt;/ng-content&gt;</span>. Your component displaying the list will keep track of the pagination state in <span class="code-quote">listingPagination</span>.
+
+[raw]
+<div hljs hljs-no-escape>
+&lt;list [data]="items"
+    [renderer]="itemRendererComponent"
+    (onItemEvents)="handleItemEvent($event)"
+    [header]="headerRendererComponent"
+    (onHeaderEvents)="handleHeaderEvent($event)"&gt;
+        &lt;pagination
+            [currentPage]="listingPagination.startingPage"
+            (onPageChange)="listingPagination.onPageChange($event)"
+            (onNext)="listingPagination.onNext($event)"
+            (onPrev)="listingPagination.onPrevious($event)"&gt;
+        &lt;/pagination&gt;
+&lt;/list&gt;
+</div>
+[/raw]
+
+<h3>Render the items in the list using a tracking function</h3>
+The goal of a tracking function is to keep track of all items in the collection and their corresponding DOM elements to only re-render elements that have been updated. This can really improve the performance of your component. The tracking function can be passed to the list component by defining a new <span class="code-quote">trackBy</span> input.
+
+[raw]
+<div hljs hljs-no-escape>
+&lt;list [data]="items"
+    [renderer]="itemRendererComponent"
+    (onItemEvents)="handleItemEvent($event)"
+    [header]="headerRendererComponent"
+    (onHeaderEvents)="handleHeaderEvent($event)"
+    [trackBy]="trackFrameworksByName"&gt;
+&lt;/list&gt;
+
+// Tracking function passed to the component
+// Allows to track a list item by name
+// @param item {Object}
+// @returns {string}
+trackFrameworksByName(item: Object): string {
+    return item.name
+}
+</div>
+[/raw]
+
+You can then update the list component's <span class="code-quote">renderListItems()</span> method and use a map/dictionary storing all the created <span class="code-quote">ComponentRef</span> for a given tracking key's value ('name' in our example). This map/dictionary will allow you to keep track of all rendered components and only re-render the ones that have changed.
