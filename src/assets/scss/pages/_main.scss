@@ -6,14 +6,7 @@
 }
 
 // Animations
-body:not(.article-single) {
-  .ng-enter {
-    @include animation('scaleUp .5s both ease-in');
-    z-index: 8888;
-  }
-}
-
-body.article-single {
+body {
   .ng-enter {
     @include animation('fadeIn .5s both ease-in');
     z-index: 8888;
