@@ -10,7 +10,7 @@
         this.isBusy = true;
 
         Article.getArticles().then(function(articles) {
-            this.articles = articles;
+            this.articles = articles.slice().reverse();
             this.isBusy = false;
         }.bind(this));
 
