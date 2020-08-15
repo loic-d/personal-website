@@ -2,7 +2,7 @@
 
 Personal website built with AngularJS. Pages and articles are managed by Wordpress and served using the `WP REST API` plugin.
 
-<a href="https://loic-delaubier.com" target="_blank">Website visible here.</a>
+![Website preview](https://user-images.githubusercontent.com/3925905/90321769-bbbb9d00-df1a-11ea-87c8-8121685ae236.gif)
 
 Development:
 * `git clone git@github.com:loic-d/personal-website.git`
@@ -12,8 +12,8 @@ Development:
 * create an `About` page and at least one blog post.
 * upload and install the theme available in `wordpress/rest_api_theme` if you want to use your Wordpress site as a REST API only.
 * update `API_ROOT` in `/src/app.constants.js` so it reflects your configuration
-* build the project by running `gulp`. This will run the tasks `build-dev` and `connect-dev`
-* go to `http://localhost:8080/` (development server loading sources)
+* build the project by running `gulp`. This task runs `build-dev` and `connect-dev`
+* go to `http://localhost:8080/`
 
 Generate a build for production:
 * run `gulp build-prod` to generate a standalone `/build` folder at the root of the project
