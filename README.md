@@ -2,7 +2,7 @@
 
 Personal website built with AngularJS. Pages and articles are managed by Wordpress and served using the `WP REST API` plugin.
 
-![Website preview](https://user-images.githubusercontent.com/3925905/90321769-bbbb9d00-df1a-11ea-87c8-8121685ae236.gif)
+![Website preview](https://user-images.githubusercontent.com/3925905/90321808-49978800-df1b-11ea-944e-7f92e3842155.gif)
 
 Development:
 * `git clone git@github.com:loic-d/personal-website.git`
